@@ -1,6 +1,9 @@
 import Twitter from 'twitter';
 import util from 'util';
 import dotenv from 'dotenv';
+import * as fse from 'fs-extra';
+import * as os from 'os';
+import * as path from 'path';
 
 type GetTweets = (
   arg1: string,
@@ -47,13 +50,29 @@ const getColorsOfBerlin = async (numberOfPages: number): Promise<any[]> => {
   return tweets;
 };
 
+const writeToFile = async (data: any[]) => {
+  let [date, month, year] = new Date().toLocaleDateString('en-US').split('/');
+
+  const distPath: string = path.join(
+    __dirname,
+    '../dist',
+    `tweets-${date}-${month}-${year}-${data.length}.json`
+  );
+
+  await fse.ensureFile(distPath);
+  await fse.writeJson(distPath, data, {
+    spaces: 2,
+    EOL: os.EOL
+  });
+}
+
 (async () => {
   try {
-    const colors: any[] = await getColorsOfBerlin(1);
+    const data: any[] = await getColorsOfBerlin(100);
 
-    console.log('colors----------------------');
-    console.log(colors);
-    console.log('----------------------');
+    await writeToFile(data);
+    
+    console.log(data);
   } catch (error) {
     console.error(error);
   }
