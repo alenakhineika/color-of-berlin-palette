@@ -1,0 +1,19 @@
+{
+  "name": "color-of-berlin-analyzer",
+  "displayName": "color-of-berlin-analyzer",
+  "version": "0.0.1",
+  "description": "The color of the sky in Berlin analyzer.",
+  "author": "Alena Khineika <alena.khineika@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write ."
+  },
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "twitter": "1.7.1"
+  },
+  "devDependencies": {
+    "prettier": "2.0.4"
+  }
+}
