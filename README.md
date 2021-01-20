@@ -1,4 +1,4 @@
-# Color of Berlin Analyzer
+# Color of Berlin Analyzer ![PREVIEW](https://img.shields.io/badge/DRAFT-blue)
 
 A project fetches colors of the sky in Berlin for a given period of time from the [Color of Berlin](https://twitter.com/colorofberlin) account.
 
