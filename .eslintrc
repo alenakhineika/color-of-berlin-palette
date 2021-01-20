@@ -1,20 +1,18 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "rules": {
-      "no-console": 1,
-      "semi": 0,
-      "@typescript-eslint/semi": [2, "always"]
-    },
-    "env": {
-      "browser": true,
-      "node": true
-    }
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "no-console": 1,
+    "semi": 0,
+    "@typescript-eslint/semi": [2, "always"]
+  },
+  "env": {
+    "browser": true,
+    "node": true
   }
+}

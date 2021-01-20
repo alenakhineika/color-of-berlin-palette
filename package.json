@@ -7,6 +7,8 @@
   "license": "ISC",
   "scripts": {
     "build": "rimraf ./build && tsc",
+    "save-tweets-to-file": "npm run build && node build/scripts/save-tweets-to-file.js",
+    "save-tweets-to-mongodb": "npm run build && node build/scripts/save-tweets-to-mongodb.js",
     "start": "npm run build && node build/index.js",
     "lint": "eslint '**/*.{js,ts}'",
     "check": "npm run lint",
@@ -21,14 +23,17 @@
   "dependencies": {
     "dotenv": "8.2.0",
     "fs-extra": "^9.1.0",
+    "mongodb": "^3.6.3",
     "twitter": "1.7.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.6",
+    "@types/mongodb": "^3.6.3",
     "@types/node": "^14.14.22",
     "@types/twitter": "^1.7.0",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
+    "bson": "^4.2.2",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
