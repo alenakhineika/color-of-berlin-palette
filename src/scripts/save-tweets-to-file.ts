@@ -1,7 +1,7 @@
 import Twitter from 'twitter';
 
-import { fetchTweets } from '../twitter';
-import { writeToFile } from '../filesystem';
+import { fetchTweets } from '../utils/twitter';
+import { writeToFile } from '../utils/filesystem';
 
 (async () => {
   try {

@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import Twitter from 'twitter';
 
-import { fetchTweets } from '../twitter';
+import { fetchTweets } from '../utils/twitter';
 
 const uri = 'mongodb://localhost';
 
