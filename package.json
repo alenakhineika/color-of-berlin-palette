@@ -2,7 +2,7 @@
   "name": "color-of-berlin-palette",
   "displayName": "color-of-berlin-palette",
   "version": "0.0.1",
-  "description": "Fetch colors of the sky in Berlin and build a color palette.",
+  "description": "Fetch colors of the sky in Berlin and create a color palette.",
   "author": "Alena Khineika <alena.khineika@gmail.com>",
   "license": "ISC",
   "scripts": {
