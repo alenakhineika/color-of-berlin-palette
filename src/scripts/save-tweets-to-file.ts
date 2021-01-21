@@ -5,7 +5,7 @@ import { writeToFile } from '../utils/filesystem';
 
 (async () => {
   try {
-    const data: Twitter.ResponseData[] = await fetchTweets(100);
+    const data: Twitter.ResponseData[] = await fetchTweets();
 
     await writeToFile(data);
 

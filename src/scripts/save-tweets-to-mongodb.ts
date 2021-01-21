@@ -12,11 +12,11 @@ const uri = 'mongodb://localhost';
   });
 
   try {
-    const data: Twitter.ResponseData[] = await fetchTweets(100);
+    const data: Twitter.ResponseData[] = await fetchTweets();
 
     await client.connect();
 
-    const database = client.db('colorOfBerlinAnalyzer');
+    const database = client.db('colorofberlin');
     const collection = database.collection('tweets');
 
     await collection.insertMany(data);

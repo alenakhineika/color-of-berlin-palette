@@ -1,13 +1,13 @@
-# Color of Berlin Analyzer ![PREVIEW](https://img.shields.io/badge/DRAFT-blue)
+# Color of Berlin Palette ![PREVIEW](https://img.shields.io/badge/DRAFT-blue)
 
-A project fetches colors of the sky in Berlin for a given period of time from the [Color of Berlin](https://twitter.com/colorofberlin) account.
+A project that fetches colors of the sky in Berlin from the [Color of Berlin](https://twitter.com/colorofberlin) account and build a color palette.
 
 ## How to install
 
 Clone the project and install dependencies.
 
 ```
-> git https://github.com/alenakhineika/color-of-berlin-analyzer .
+> git https://github.com/alenakhineika/color-of-berlin-palette .
 > npm i
 ```
 

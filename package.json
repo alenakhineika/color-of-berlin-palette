@@ -1,8 +1,8 @@
 {
-  "name": "color-of-berlin-analyzer",
-  "displayName": "color-of-berlin-analyzer",
+  "name": "color-of-berlin-palette",
+  "displayName": "color-of-berlin-palette",
   "version": "0.0.1",
-  "description": "The color of the sky in Berlin analyzer.",
+  "description": "Fetch colors of the sky in Berlin and build a color palette.",
   "author": "Alena Khineika <alena.khineika@gmail.com>",
   "license": "ISC",
   "scripts": {

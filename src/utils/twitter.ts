@@ -31,16 +31,20 @@ const _fetchTweetsForPage = async (
   });
 };
 
-const fetchTweets = async (numberOfPages: number): Promise<Twitter.ResponseData[]> => {
+const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
   let tweets: Twitter.ResponseData[] = [];
+  let page = 1;
+  let done = false;
 
-  for (let i = 1; i <= numberOfPages; i++) {
-    const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(i);
+  while (done === false) {
+    const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(page);
 
     if (tweetsPerPage.length > 0) {
+      page++;
+
       tweets = tweets.concat(tweetsPerPage);
     } else {
-      return tweets;
+      done = true;
     }
   }
 

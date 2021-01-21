@@ -7,8 +7,8 @@ const writeToFile = async (data: EJSON.SerializableTypes[]): Promise<void> => {
   const [date, month, year] = new Date().toLocaleDateString('en-US').split('/');
   const distPath: string = path.join(
     __dirname,
-    '../dist',
-    `tweets-${date}-${month}-${year}-${data.length}.json`,
+    '../../dist',
+    `colorofberlin-tweets-${date}-${month}-${year}-${data.length}.json`,
   );
 
   await fse.ensureFile(distPath);
