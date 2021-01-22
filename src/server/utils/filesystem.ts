@@ -11,11 +11,16 @@ const writeToFile = async (data: EJSON.SerializableTypes[]): Promise<void> => {
     `colorofberlin-tweets-${date}-${month}-${year}-${data.length}.json`,
   );
 
-  await fse.ensureFile(distPath);
-  await fse.writeJson(distPath, data, {
-    spaces: 2,
-    EOL: os.EOL,
-  });
+  try {
+    await fse.ensureFile(distPath);
+    await fse.writeJson(distPath, data, {
+      spaces: 2,
+      EOL: os.EOL,
+    });
+    console.log(`Tweets saved to ${distPath}`);
+  } catch (error) {
+    console.error(`Write json to file failed: ${error.message}`);
+  }
 };
 
 export default writeToFile;

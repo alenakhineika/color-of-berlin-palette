@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import ora from 'ora';
 import Twitter from 'twitter';
 import util from 'util';
 
@@ -35,18 +36,30 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
   let page = 1;
   let done = false;
 
-  while (done === false) {
-    const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(page);
+  const ui = ora()
+    .info('Fetching tweets from https://twitter.com/colorofberlin')
+    .start();
 
-    if (tweetsPerPage.length > 0) {
-      page += 1;
-      tweets = tweets.concat(tweetsPerPage);
-    } else {
-      done = true;
+  try {
+    while (done === false) {
+      const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(page);
+  
+      if (tweetsPerPage.length > 0) {
+        page += 1;
+        tweets = tweets.concat(tweetsPerPage);
+      } else {
+        done = true;
+      }
     }
-  }
 
-  return tweets;
+    ui.succeed(`Fetched ${tweets.length} tweets`);
+
+    return tweets;
+  } catch (error) {
+    ui.fail(`Fetch from twitter failed: ${error.message}`);
+
+    return[];
+  }
 };
 
 export default fetchTweets;
