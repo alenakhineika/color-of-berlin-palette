@@ -14,7 +14,16 @@
     "comma-dangle": "off",
     "no-underscore-dangle": "off",
     "semi": 0,
-    "@typescript-eslint/semi": [2, "always"]
+    "@typescript-eslint/semi": [2, "always"],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

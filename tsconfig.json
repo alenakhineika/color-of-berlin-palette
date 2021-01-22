@@ -3,6 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": [
       "es6",
@@ -11,7 +12,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./dist/",
+    "outDir": "./build",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
@@ -19,9 +20,9 @@
     "target": "es6"
   },
   "include": [
-    "./src/client"
+    "./src/server"
   ],
   "exclude": [
-    "./src/build"
-  ],
+    "./src/client"
+  ]
 }

@@ -7,6 +7,6 @@
   "watch": [
     "src/build"
   ],
-  "exec": "tsc -p tsconfig.server.json && node build/",
+  "exec": "tsc && node build/",
   "ext": "ts"
 }

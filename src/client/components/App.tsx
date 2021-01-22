@@ -11,13 +11,13 @@ export default class App extends React.Component<{}, AppState> {
     text: ''
   };
 
-  getText = () => {
+  getText = (): void => {
     fetch(apiRoute.getRoute('test'))
       .then(res => res.json())
       .then(res => this.setState({ text: res.text }));
-  }
+  };
 
-  render() {
+  render(): JSX.Element {
     const { text } = this.state;
 
     return (
