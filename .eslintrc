@@ -1,18 +1,26 @@
 {
-  "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "rules": {
-    "no-console": 1,
-    "semi": 0,
-    "@typescript-eslint/semi": [2, "always"]
-  },
   "env": {
     "browser": true,
     "node": true
+  },
+  "rules": {
+    "no-console": "off",
+    "comma-dangle": "off",
+    "no-underscore-dangle": "off",
+    "semi": 0,
+    "@typescript-eslint/semi": [2, "always"]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

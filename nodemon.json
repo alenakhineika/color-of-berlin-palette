@@ -1,0 +1,12 @@
+{
+  "ignore": [
+    "**/*.spec.ts",
+    "node_modules",
+    "src/client"
+  ],
+  "watch": [
+    "src/build"
+  ],
+  "exec": "tsc -p tsconfig.server.json && node build/",
+  "ext": "ts"
+}

@@ -1,27 +1,26 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "react",
+    "forceConsistentCasingInFileNames": true,
     "lib": [
-      "es6",
-      "dom"
+      "es6"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true,
-    "outDir": "./dist/",
+    "target": "es6",
+    "outDir": "./build",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "resolveJsonModule": true,
-    "target": "es6"
+    "types": ["node"],
+    "typeRoots" : ["./node_modules/@types"]
   },
+  "compileOnSave": true,
   "include": [
-    "./src/client"
+    "./src/server"
   ],
   "exclude": [
-    "./src/build"
-  ],
+    "./src/client"
+  ]
 }

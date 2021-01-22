@@ -2,29 +2,28 @@ import dotenv from 'dotenv';
 import Twitter from 'twitter';
 import util from 'util';
 
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+const envConstants = process.env.NODE_ENV !== 'production'
+  ? dotenv.config().parsed
+  : process.env;
+const twitterOptions: Twitter.BearerTokenOptions = {
+  consumer_key: envConstants?.TWITTER_API_CONSUMER_KEY || '',
+  consumer_secret: envConstants?.TWITTER_API_CONSUMER_SECRET || '',
+  bearer_token: envConstants?.TWITTER_BEARER_TOKEN || '',
+};
 
 type GetTweets = (
   arg1: string,
   arg2: { screen_name: string; count: number; page: number },
 ) => Promise<any>;
 
-const client: Twitter = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_API_KEY || '',
-  consumer_secret: process.env.TWITTER_CONSUMER_API_KEY_SECRET || '',
-  access_token_key: process.env.TWITTER_AUTHENTICATION_ACCESS_TOKEN || '',
-  access_token_secret:
-    process.env.TWITTER_AUTHENTICATION_ACCESS_TOKEN_SECRET || '',
-});
+const client: Twitter = new Twitter(twitterOptions);
 
-const _fetchTweetsForPage = async (
+const _fetchTweetsForPage = (
   page: number,
 ): Promise<Twitter.ResponseData[]> => {
   const getTweets: GetTweets = util.promisify(client.get.bind(client));
 
-  return await getTweets('statuses/user_timeline', {
+  return getTweets('statuses/user_timeline', {
     screen_name: 'colorofberlin',
     count: 200,
     page,
@@ -40,8 +39,7 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
     const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(page);
 
     if (tweetsPerPage.length > 0) {
-      page++;
-
+      page += 1;
       tweets = tweets.concat(tweetsPerPage);
     } else {
       done = true;
@@ -51,4 +49,4 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
   return tweets;
 };
 
-export { fetchTweets };
+export default fetchTweets;

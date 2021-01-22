@@ -1,4 +1,8 @@
+*.log
 .env
+.idea
+.vscode
 build
 dist
 node_modules
+out

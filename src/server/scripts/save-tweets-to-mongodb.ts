@@ -1,12 +1,12 @@
 import { MongoClient } from 'mongodb';
 import Twitter from 'twitter';
 
-import { fetchTweets } from '../utils/twitter';
+import fetchTweets from '../utils/twitter';
 
-const uri = 'mongodb://localhost';
+const URI = 'mongodb://localhost';
 
 (async () => {
-  const client: MongoClient = new MongoClient(uri, {
+  const client: MongoClient = new MongoClient(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
