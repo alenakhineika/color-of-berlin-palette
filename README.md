@@ -16,7 +16,7 @@ Accessing the Twitter APIs requires a set of credentials that you must pass with
 - [Apply for a Twitter developer account](https://developer.twitter.com/en/apply-for-access.html)
 - [Create a new Twitter Project and App](https://developer.twitter.com/en/portal/projects-and-apps)
 
-You will find the generated consumer key and authentication tokens in the project settings.
+You will find the required secrets in the project settings.
 
 In the project root, create the `.env` file and assign secrets to the following environment variables:
 
