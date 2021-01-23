@@ -3,6 +3,11 @@ import ora from 'ora';
 import Twitter from 'twitter';
 import util from 'util';
 
+type LastSavedTweet = {
+  id: string,
+  created_at: string
+};
+
 const envConstants = process.env.NODE_ENV !== 'production'
   ? dotenv.config().parsed
   : process.env;
@@ -12,26 +17,33 @@ const twitterOptions: Twitter.BearerTokenOptions = {
   bearer_token: envConstants?.TWITTER_BEARER_TOKEN || '',
 };
 
-type GetTweets = (
-  arg1: string,
-  arg2: { screen_name: string; count: number; page: number },
-) => Promise<any>;
+type TwitterParams = { screen_name: string; count: number; page: number, since_id?: string };
+
+type GetTweets = ( arg1: string, arg2: TwitterParams ) => Promise<any>;
 
 const client: Twitter = new Twitter(twitterOptions);
 
-const _fetchTweetsForPage = (
+const _fetchTweetsForPage = (data: {
   page: number,
-): Promise<Twitter.ResponseData[]> => {
+  lastSavedTweet?: LastSavedTweet
+}): Promise<Twitter.ResponseData[]> => {
+  const { page, lastSavedTweet } = data;
   const getTweets: GetTweets = util.promisify(client.get.bind(client));
 
-  return getTweets('statuses/user_timeline', {
+  const twitterParameters: TwitterParams = {
     screen_name: 'colorofberlin',
     count: 200,
-    page,
-  });
+    page
+  };
+
+  if (lastSavedTweet) {
+    twitterParameters.since_id = lastSavedTweet.id;
+  }
+
+  return getTweets('statuses/user_timeline', twitterParameters);
 };
 
-const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
+const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.ResponseData[]> => {
   let tweets: Twitter.ResponseData[] = [];
   let page = 1;
   let done = false;
@@ -42,7 +54,7 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
 
   try {
     while (done === false) {
-      const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage(page);
+      const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage({ page, lastSavedTweet });
   
       if (tweetsPerPage.length > 0) {
         page += 1;
@@ -52,7 +64,13 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
       }
     }
 
-    ui.succeed(`Fetched ${tweets.length} tweets`);
+    if (tweets.length > 0 && lastSavedTweet) {
+      tweets = tweets.filter((item) => (item.id !== lastSavedTweet.id));
+    }
+
+    const tweet = tweets.length === 1 ? 'tweet' : 'tweets';
+
+    ui.succeed(`Fetched ${tweets.length} ${tweet}`);
 
     return tweets;
   } catch (error) {
@@ -62,4 +80,4 @@ const fetchTweets = async (): Promise<Twitter.ResponseData[]> => {
   }
 };
 
-export default fetchTweets;
+export { fetchTweets, LastSavedTweet };

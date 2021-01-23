@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import Twitter from 'twitter';
 
-import fetchTweets from '../utils/twitter';
+import { fetchTweets, LastSavedTweet } from '../utils/twitter';
 
 const URI = 'mongodb://localhost';
 const DATABASE = 'colorofberlin';
@@ -12,22 +12,40 @@ const COLLECTION = 'tweets';
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  const data: Twitter.ResponseData[] = await fetchTweets();
+  
+  try {
+    await client.connect();
 
-  if (data.length > 0) {
-    try {
-      await client.connect();
-  
-      const database = client.db(DATABASE);
-      const collection = database.collection(COLLECTION);
-  
-      await collection.insertMany(data);
-  
-      console.log(`Tweets saved to MongoDB namespace ${DATABASE}.${COLLECTION}`);
-    } catch (error) {
-      console.error(`Save to MongoDB failed: ${error.message}`);
-    } finally {
-      await client.close();
+    const database = client.db(DATABASE);
+    const collection = database.collection(COLLECTION);
+
+    let lastSavedTweet: LastSavedTweet | undefined;
+
+    await collection.aggregate([
+      { $addFields: { convertedDate: { $toDate: '$created_at' } } },
+      { $sort: { convertedDate: -1 } },
+      { $limit: 1 },
+      { $project: { _id: 0, id: 1, created_at: 1 } }
+    ]).forEach((item) => {
+      lastSavedTweet = item;
+    });
+
+    if (lastSavedTweet) {
+      console.log(`Fetch tweets since '${lastSavedTweet.id}' posted at '${lastSavedTweet.created_at}'`);
+    } else {
+      console.log('Fetch all tweets');
     }
+
+    const data: Twitter.ResponseData[] = await fetchTweets(lastSavedTweet);
+
+    if (data.length > 0) {
+      await collection.insertMany(data);
+
+      console.log(`Saved to MongoDB '${DATABASE}.${COLLECTION}'`);
+    }
+  } catch (error) {
+    console.error(`Save to MongoDB failed: ${error.message}`);
+  } finally {
+    await client.close();
   }
 })();

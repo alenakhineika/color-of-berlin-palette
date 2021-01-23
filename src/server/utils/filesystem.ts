@@ -17,7 +17,7 @@ const writeToFile = async (data: EJSON.SerializableTypes[]): Promise<void> => {
       spaces: 2,
       EOL: os.EOL,
     });
-    console.log(`Tweets saved to ${distPath}`);
+    console.log(`Tweets saved to '${distPath}'`);
   } catch (error) {
     console.error(`Write json to file failed: ${error.message}`);
   }
