@@ -13,7 +13,7 @@ Clone the project and install dependencies.
 
 Accessing the Twitter APIs requires a set of credentials that you must pass with each request. To generate these keys and tokens you should:
 
-- [Apply for a developer account](https://developer.twitter.com/en/apply-for-access.html)
+- [Apply for a Twitter developer account](https://developer.twitter.com/en/apply-for-access.html)
 - [Create a new Twitter Project and App](https://developer.twitter.com/en/portal/projects-and-apps)
 
 You will find the generated consumer key and authentication tokens in the project settings.
