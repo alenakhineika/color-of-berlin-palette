@@ -55,7 +55,7 @@ router.get('/getTweets', async (req: Request, res: Response) => {
 
     tweets = tweets.map((item) => {
       const textAll = item.text.split('. #');
-      const colorHex = textAll[1].substring(0, 6);
+      const colorHex = `#${textAll[1].substring(0, 6)}`;
       const textWithColorName = textAll[0].split('The color of the sky in Berlin is ');
       const colorName = textWithColorName[1];
 
