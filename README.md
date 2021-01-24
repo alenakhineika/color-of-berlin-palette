@@ -32,7 +32,7 @@ If you don't want to create a Twitter developer account, you can use the `tweets
 
 ### Fetch tweets and save them to MongoDB
 
-In order to create a color palette, you will need data to work with. Use the following script to fetch tweets from the `Color of Berlin` Twitter account and save them to MongoDB:
+If you received your Twitter consumer keys and authentication tokens use the following script to fetch tweets from the `Color of Berlin` Twitter account and save them to MongoDB:
 
 ```
 > npm run save-tweets-to-mongodb
