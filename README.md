@@ -26,6 +26,8 @@ TWITTER_BEARER_TOKEN=
 
 You also need MongoDB installed to run the project: https://docs.mongodb.com/manual/installation/
 
+If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` dataset from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database and the `tweets` collection, and import sample JSON to MongoDB.
+
 ## How to fetch data
 
 ### Fetch tweets and save them to MongoDB
