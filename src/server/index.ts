@@ -52,7 +52,7 @@ router.get('/getTweets', async (req: Request, res: Response) => {
     // Use aggregation to find 30 recent tweets
     // and modify the resulting array to match the expected data format.
     tweets = await collection.aggregate([
-      // Take the created_at field that has a string value and can't be sorted,
+      // Take the created_at field that has a string value and can't be sorted
       // and create a new convertedDate field that has a ISODate value.
       { $addFields: { convertedDate: { $toDate: '$created_at' } } },
       // Sort descending from the most recent tweet to later ones.
@@ -63,7 +63,7 @@ router.get('/getTweets', async (req: Request, res: Response) => {
       { $project: { _id: 0, id: 1, created_at: 1, text: 1 } }
     ]).toArray();
 
-    // A color's hex value and a name are stored inside the text string.
+    // A color's hex value and a name are stored inside a text string.
     // Parse the string to extract these values.
     tweets = tweets.map((item) => {
       const textAll = item.text.split('. #');

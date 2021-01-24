@@ -57,7 +57,7 @@ export default class App extends React.Component<{}, AppState> {
   // to reflect these changes. Here you can specify different page layouts
   // depending on the data format received from the server.
   // Currently it checks if the server returns 30 tweets
-  // It renders the layout with 30 squares filled with a color.
+  // it renders the layout with 30 squares filled with a color.
   render(): JSX.Element {
     const tweets = this.state.tweets;
 
