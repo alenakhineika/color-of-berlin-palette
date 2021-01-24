@@ -24,7 +24,7 @@ TWITTER_CONSUMER_API_KEY_SECRET=
 TWITTER_BEARER_TOKEN=
 ```
 
-You also need MongoDB installed to run this project: https://docs.mongodb.com/manual/installation/
+You also need MongoDB installed to run the project: https://docs.mongodb.com/manual/installation/
 
 ## How to fetch data
 
@@ -38,7 +38,7 @@ In order to create a color palette, you will need data to work with. Use the fol
 
 The script fetches all available tweets, or if you run it more than once only new tweets and saves them to the `colorofberlin.tweets` collection.
 
-Note that the [`statuses/user_timeline`](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-user_timeline) method can only return up to 3,200 of a user's most recent tweets.
+> Note that the [`statuses/user_timeline`](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-user_timeline) method can only return up to 3,200 of a user's most recent tweets.
 
 ### Fetch tweets and save them to the file system
 
