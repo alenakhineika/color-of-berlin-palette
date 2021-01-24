@@ -1,6 +1,6 @@
 # Color of Berlin Palette ![PREVIEW](https://img.shields.io/badge/DRAFT-blue)
 
-A project that fetches colors of the sky in Berlin from the [Color of Berlin](https://twitter.com/colorofberlin) Twitter account and creates a color palette.
+A project fetches colors of the sky in Berlin from the [Color of Berlin](https://twitter.com/colorofberlin) Twitter account and creates a color palette.
 
 ## How to install
 
@@ -16,7 +16,7 @@ Accessing the Twitter APIs requires a set of credentials that you must pass with
 - [Apply for a Twitter developer account](https://developer.twitter.com/en/apply-for-access.html)
 - [Create a new Twitter Project and App](https://developer.twitter.com/en/portal/projects-and-apps)
 
-You will find the required secrets in the project settings. In the project root, create the `.env` file and assign these secrets to the following environment variables:
+You will find the required secrets in the Twitter App settings. In the `Color of Berlin Palette` project root, create the `.env` file and assign these Twitter secrets to the following environment variables:
 
 ```
 TWITTER_CONSUMER_API_KEY=
@@ -26,7 +26,7 @@ TWITTER_BEARER_TOKEN=
 
 You also need MongoDB installed to run the project: https://docs.mongodb.com/manual/installation/
 
-If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` dataset from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database and the `tweets` collection, and import sample JSON to MongoDB.
+If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import sample JSON to MongoDB.
 
 ## How to fetch data
 
