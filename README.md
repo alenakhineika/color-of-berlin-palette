@@ -26,7 +26,7 @@ TWITTER_BEARER_TOKEN=
 
 You also need MongoDB installed to run the project: https://docs.mongodb.com/manual/installation/
 
-If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import sample JSON to MongoDB.
+If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import the sample JSON to MongoDB.
 
 ## How to fetch data
 
@@ -44,7 +44,7 @@ The script fetches all available tweets, or if you run it more than once only ne
 
 ### Fetch tweets and save them to the file system
 
-There is also an option to save tweets to the JSON file and use them outside of this project. The following script fetches all available tweets and saves them to the `out` folder in the root directory of the project:
+There is also an option to save tweets to the file system and use them outside of this project. The following script fetches all available tweets and saves them as a new JSON file to the `out` folder in the root directory of the project:
 
 ```
 > npm run save-tweets-to-file
