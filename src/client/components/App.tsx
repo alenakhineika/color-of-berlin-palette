@@ -15,11 +15,10 @@ interface AppState {
 export default class App extends React.Component<{}, AppState> {
   state: AppState = { tweets: [] };
 
-  // When a user clicks the `Get Tweets` button
-  // Send a request to server/index.ts and wait for results.
-  // After receiving results update the React state
-  // To fire page rendering.
-  getText = (): void => {
+  // When a user clicks the `Get Thirty Recent Tweets From DB` button
+  // send a request to server/index.ts and wait for results.
+  // After receiving results update the React state to fire page rendering.
+  getThirtyRecentTweets = (): void => {
     fetch(apiRoute.getRoute('getTweets'))
       .then(res => res.json())
       .then(res => this.setState({ tweets: res.tweets }));
@@ -30,11 +29,14 @@ export default class App extends React.Component<{}, AppState> {
 
     // All days have the same css, therefore we use a loop
     // to create only one div and use it for all days.
+    // Note that when you use loops React requires unique keys for components to distinguish them.
     for (let day = 0; day < 6; day++) {
-      blocks.push(<div className="day" style={{background: this.state.tweets[offset + day].colorHex}}></div>);
+      blocks.push(
+        <div key={`day${day+1}`} className="day" style={{background: this.state.tweets[offset + day].colorHex}}></div>
+      );
     }
 
-    return (<div className="week">{blocks}</div>);
+    return (<div key={`week${offset/7+1}`} className="week">{blocks}</div>);
   }
 
   // Returns layout for a month.
@@ -62,7 +64,7 @@ export default class App extends React.Component<{}, AppState> {
     return (
       <div>
         <p>Length: {this.state.tweets.length}</p>
-        <div><button type="button" onClick={this.getText}>Get Tweets</button></div>
+        <div><button type="button" onClick={this.getThirtyRecentTweets}>Get Thirty Recent Tweets From DB</button></div>
         {tweets.length === 30 ? this.getMonthPalette() : null}
       </div>
     );
