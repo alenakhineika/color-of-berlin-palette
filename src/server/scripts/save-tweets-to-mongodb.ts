@@ -40,8 +40,7 @@ const MONGODB_COLLECTION = 'tweets';
 
     if (data.length > 0) {
       await collection.insertMany(data);
-
-      console.log(`Saved to MongoDB '${database}.${collection}'`);
+      console.log(`Saved to MongoDB '${MONGODB_DATABASE}.${MONGODB_COLLECTION}'`);
     }
   } catch (error) {
     console.error(`Save to MongoDB failed: ${error.message}`);

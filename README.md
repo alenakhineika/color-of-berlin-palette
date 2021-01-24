@@ -25,3 +25,39 @@ TWITTER_CONSUMER_API_KEY=
 TWITTER_CONSUMER_API_KEY_SECRET=
 TWITTER_BEARER_TOKEN=
 ```
+
+You need MongoDB installed to run this project:
+
+https://docs.mongodb.com/manual/installation/
+
+## How to fetch data
+
+### Fetch tweets and save them to MongoDB
+
+In order to create a color palette, you will need data to work with. Use the following script to fetch tweets from the `Color of Berlin` Twitter account and save them to MongoDB:
+
+```
+> npm run save-tweets-to-mongodb
+```
+
+The script fetches all available tweets, or if you run it more than once only new tweets and saves them to the `colorofberlin.tweets` collection.
+
+Note that the [`statuses/user_timeline`](https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-user_timeline) method can only return up to 3,200 of a user's most recent tweets.
+
+### Fetch tweets and save them to the file system
+
+There is also an option to save tweets to the JSON file and use them outside of this project. The following script fetches all available tweets and saves them to the `out` folder in the root directory of the project:
+
+```
+> npm run save-tweets-to-file
+```
+
+## Run the project
+
+Start the server and the client in development mode:
+
+```
+> npm run start:dev
+```
+
+The server is running with nodemon and the client is served by Webpack Dev Server with hot reloading enabled. The `http://localhost:3000/` page will be automatically opened in a web browser.

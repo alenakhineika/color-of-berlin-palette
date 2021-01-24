@@ -17,35 +17,14 @@ const twitterOptions: Twitter.BearerTokenOptions = {
   bearer_token: envConstants?.TWITTER_BEARER_TOKEN || '',
 };
 
-type TwitterParams = { screen_name: string; count: number; page: number, since_id?: string };
+type TwitterParams = { screen_name: string; count: number; since_id?: string, max_id?: string };
 
 type GetTweets = ( arg1: string, arg2: TwitterParams ) => Promise<any>;
 
 const client: Twitter = new Twitter(twitterOptions);
 
-const _fetchTweetsForPage = (data: {
-  page: number,
-  lastSavedTweet?: LastSavedTweet
-}): Promise<Twitter.ResponseData[]> => {
-  const { page, lastSavedTweet } = data;
-  const getTweets: GetTweets = util.promisify(client.get.bind(client));
-
-  const twitterParameters: TwitterParams = {
-    screen_name: 'colorofberlin',
-    count: 200,
-    page
-  };
-
-  if (lastSavedTweet) {
-    twitterParameters.since_id = lastSavedTweet.id;
-  }
-
-  return getTweets('statuses/user_timeline', twitterParameters);
-};
-
 const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.ResponseData[]> => {
   let tweets: Twitter.ResponseData[] = [];
-  let page = 1;
   let done = false;
 
   const ui = ora()
@@ -53,19 +32,33 @@ const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.Res
     .start();
 
   try {
+    const getTweets: GetTweets = util.promisify(client.get.bind(client));
+    const twitterParameters: TwitterParams = {
+      screen_name: 'colorofberlin',
+      count: 200
+    };
+
+    if (lastSavedTweet) {
+      twitterParameters.since_id = lastSavedTweet.id;
+    } {
+      tweets = await getTweets('statuses/user_timeline', twitterParameters);
+      twitterParameters.max_id = (tweets.pop() || {}).id;
+    }
+
     while (done === false) {
-      const tweetsPerPage: Twitter.ResponseData[] = await _fetchTweetsForPage({ page, lastSavedTweet });
+      const nextTweets = await getTweets('statuses/user_timeline', twitterParameters);
   
-      if (tweetsPerPage.length > 0) {
-        page += 1;
-        tweets = tweets.concat(tweetsPerPage);
+      if (nextTweets.length === 200) {
+        if (lastSavedTweet) {
+          twitterParameters.since_id = (nextTweets.shift() || {}).id;
+        } else {
+          twitterParameters.max_id = (nextTweets.pop() || {}).id;
+        }
+
+        tweets = tweets.concat(nextTweets);
       } else {
         done = true;
       }
-    }
-
-    if (tweets.length > 0 && lastSavedTweet) {
-      tweets = tweets.filter((item) => (item.id !== lastSavedTweet.id));
     }
 
     const tweet = tweets.length === 1 ? 'tweet' : 'tweets';
@@ -76,7 +69,7 @@ const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.Res
   } catch (error) {
     ui.fail(`Fetch from twitter failed: ${error.message}`);
 
-    return[];
+    return [];
   }
 };
 
