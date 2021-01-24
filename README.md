@@ -1,6 +1,6 @@
 # Color of Berlin Palette ![PREVIEW](https://img.shields.io/badge/DRAFT-blue)
 
-A project fetches colors of the sky in Berlin from the [Color of Berlin](https://twitter.com/colorofberlin) Twitter account and creates a color palette.
+The `Color of Berlin Palette` project fetches colors of the sky in Berlin from the [Color of Berlin](https://twitter.com/colorofberlin) Twitter account and creates a color palette.
 
 ## How to install
 
