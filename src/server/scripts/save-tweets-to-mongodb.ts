@@ -3,12 +3,12 @@ import Twitter from 'twitter';
 
 import { fetchTweets, LastSavedTweet } from '../utils/twitter';
 
-const URI = 'mongodb://localhost';
-const DATABASE = 'colorofberlin';
-const COLLECTION = 'tweets';
+const MONGODB_URI = 'mongodb://localhost';
+const MONGODB_DATABASE = 'colorofberlin';
+const MONGODB_COLLECTION = 'tweets';
 
 (async () => {
-  const client: MongoClient = new MongoClient(URI, {
+  const client: MongoClient = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -16,8 +16,8 @@ const COLLECTION = 'tweets';
   try {
     await client.connect();
 
-    const database = client.db(DATABASE);
-    const collection = database.collection(COLLECTION);
+    const database = client.db(MONGODB_DATABASE);
+    const collection = database.collection(MONGODB_COLLECTION);
 
     let lastSavedTweet: LastSavedTweet | undefined;
 
@@ -41,7 +41,7 @@ const COLLECTION = 'tweets';
     if (data.length > 0) {
       await collection.insertMany(data);
 
-      console.log(`Saved to MongoDB '${DATABASE}.${COLLECTION}'`);
+      console.log(`Saved to MongoDB '${database}.${collection}'`);
     }
   } catch (error) {
     console.error(`Save to MongoDB failed: ${error.message}`);
