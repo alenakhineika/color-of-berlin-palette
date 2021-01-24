@@ -4,7 +4,7 @@ A project that fetches colors of the sky in Berlin from the [Color of Berlin](ht
 
 ## How to install
 
-Clone the project and install dependencies.
+Clone the project and install dependencies:
 
 ```
 > git https://github.com/alenakhineika/color-of-berlin-palette .
@@ -16,9 +16,7 @@ Accessing the Twitter APIs requires a set of credentials that you must pass with
 - [Apply for a Twitter developer account](https://developer.twitter.com/en/apply-for-access.html)
 - [Create a new Twitter Project and App](https://developer.twitter.com/en/portal/projects-and-apps)
 
-You will find the required secrets in the project settings.
-
-In the project root, create the `.env` file and assign secrets to the following environment variables:
+You will find the required secrets in the project settings. In the project root, create the `.env` file and assign these secrets to the following environment variables:
 
 ```
 TWITTER_CONSUMER_API_KEY=
@@ -26,9 +24,7 @@ TWITTER_CONSUMER_API_KEY_SECRET=
 TWITTER_BEARER_TOKEN=
 ```
 
-You need MongoDB installed to run this project:
-
-https://docs.mongodb.com/manual/installation/
+You also need MongoDB installed to run this project: https://docs.mongodb.com/manual/installation/
 
 ## How to fetch data
 
