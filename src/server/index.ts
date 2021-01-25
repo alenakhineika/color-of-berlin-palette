@@ -29,9 +29,6 @@ startup.loadStaticFiles(app);
 startup.loadMongodbClient(app);
 startup.loadControllers(app);
 
-// Set up routing.
-app.use('/api', express.Router());
-
 // Start the server.
 const serverPort = Number(process.env.PORT) || app.get('config').server.port;
 

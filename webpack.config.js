@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const CLIENT_OUT_DIR = 'dist';
+const CLIENT_CONFIG = require('./src/client/config/client.json');
+const SERVER_CONFIG = require('./src/server/config/server.json');
 
 module.exports = {
   entry: ['babel-polyfill', './src/client/index.tsx'],
@@ -68,12 +70,12 @@ module.exports = {
     extensions: ['*', '.ts', '.tsx', '.js', '.jsx', '.json', '.less']
   },
   devServer: {
-    port: 3000,
+    port: CLIENT_CONFIG.port,
     open: true,
     hot: true,
     proxy: {
       '/**': {
-        target: 'http://localhost:8050',
+        target: `http://${SERVER_CONFIG.hostname}:${SERVER_CONFIG.port}`,
         secure: false,
         changeOrigin: true
       }

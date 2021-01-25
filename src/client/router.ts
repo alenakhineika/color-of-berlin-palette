@@ -1,4 +1,4 @@
-const CLIENT_HOST = 'http://localhost:3000';
+import config from './config';
 
 interface IApi {
   host: string;
@@ -17,6 +17,6 @@ class Api implements IApi {
   }
 }
 
-const apiRoute: Api = new Api(CLIENT_HOST);
+const apiRoute: Api = new Api(`http://${config.client.hostname}:${config.client.port}`);
 
 export default apiRoute;
