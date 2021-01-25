@@ -27,7 +27,7 @@ app.use(express.static('dist'));
 
 startup.loadStaticFiles(app);
 startup.loadMongodbClient(app);
-startup.configureRoutes(app);
+startup.loadControllers(app);
 
 // Set up routing.
 app.use('/api', express.Router());
