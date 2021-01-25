@@ -72,7 +72,7 @@ module.exports = {
     open: true,
     hot: true,
     proxy: {
-      '/api/**': {
+      '/**': {
         target: 'http://localhost:8050',
         secure: false,
         changeOrigin: true

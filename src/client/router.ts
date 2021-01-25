@@ -13,7 +13,7 @@ class Api implements IApi {
   }
 
   getRoute(routeName: string) {
-    return `${this.host}/api/${routeName}`;
+    return `${this.host}/${routeName}`;
   }
 }
 

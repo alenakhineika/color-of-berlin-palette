@@ -1,0 +1,6 @@
+{
+  "port": 8050,
+  "mongodbUri": "mongodb://localhost",
+  "mongodbDatabase": "colorofberlin",
+  "mongodbCollection": "tweets"
+}

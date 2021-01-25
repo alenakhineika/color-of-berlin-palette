@@ -1,0 +1,16 @@
+[
+  {
+    "name": "index",
+    "method": "GET",
+    "path": "/",
+    "handler": "generic/index",
+    "component": "App"
+  },
+  {
+    "name": "index",
+    "method": "GET",
+    "path": "/getTweets/",
+    "handler": "generic/index",
+    "component": "App"
+  }
+]

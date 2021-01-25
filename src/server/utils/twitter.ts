@@ -3,10 +3,7 @@ import ora from 'ora';
 import Twitter from 'twitter';
 import util from 'util';
 
-type LastSavedTweet = {
-  id: string,
-  created_at: string
-};
+import { LastSavedTweet, TwitterParams, GetTweets } from '../types/types';
 
 const envConstants = process.env.NODE_ENV !== 'production'
   ? dotenv.config().parsed
@@ -16,10 +13,6 @@ const twitterOptions: Twitter.BearerTokenOptions = {
   consumer_secret: envConstants?.TWITTER_API_CONSUMER_SECRET || '',
   bearer_token: envConstants?.TWITTER_BEARER_TOKEN || '',
 };
-
-type TwitterParams = { screen_name: string; count: number; since_id?: string, max_id?: string };
-
-type GetTweets = ( arg1: string, arg2: TwitterParams ) => Promise<any>;
 
 const client: Twitter = new Twitter(twitterOptions);
 

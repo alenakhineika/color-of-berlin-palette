@@ -1,90 +1,39 @@
-import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import middleware from './middlewares';
-import { MongoClient, Db, Collection } from 'mongodb';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import express, { Express } from 'express';
 
-const SERVER_PORT = Number(process.env.PORT) || 8050;
-const CLIENT_PUBLIC_HTML = '/dist/index.html';
-const CLIENT_OUT_DIR = 'dist';
-const MONGODB_URI = 'mongodb://localhost';
-const MONGODB_DATABASE = 'colorofberlin';
-const MONGODB_COLLECTION = 'tweets';
-
-// Instantiate a MongoDB client.
-const client: MongoClient = new MongoClient(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-let database: Db | undefined;
-let collection: Collection | undefined;
-
-(async () => {
-  try {
-    await client.connect(); // Connect to mongodb://localhost.
-    database = client.db(MONGODB_DATABASE); // Access the `colorofberlin` database.
-    collection = database.collection(MONGODB_COLLECTION); // Access the `tweets` collection.
-  } catch (error) {
-    console.error(`Connect to MongoDB failed: ${error.message}`);
-  }
-})();
+import middleware from './middleware';
+import startup from './startup';
 
 const app: Express = express();
 
-app.use(bodyParser.json());
+// Manage server startup.
+startup.loadConfig(app);
+startup.loadSettings(app);
+startup.loadRoutes(app);
+
+// Apply before middleware.
+app.use(cookieParser());
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(CLIENT_OUT_DIR));
-app.get('/', (req, res) => res.sendFile(CLIENT_PUBLIC_HTML));
+app.use(bodyParser.json({ limit: '300mb' }));
+app.use(middleware.logger);
+app.use(middleware.trailingSlash);
+app.use(middleware.health);
+app.use(middleware.payload);
+app.use(middleware.routeInfo);
+app.use(express.static('dist'));
 
-const router = express.Router();
+startup.loadStaticFiles(app);
+startup.loadMongodbClient(app);
+startup.configureRoutes(app);
 
-// Listen for requests from the client and for `getTweets` request return 30 recent tweets.
-router.get('/getTweets', async (req: Request, res: Response) => {
-  // The data format expected by the client.
-  let tweets: {
-    id: number,
-    created_at: string,
-    text: string,
-    colorHex: string,
-    colorName: string
-  }[] | [] = [];
+// Set up routing.
+app.use('/api', express.Router());
 
-  if (collection) {
-    // Use aggregation to find 30 recent tweets
-    // and modify the resulting array to match the expected data format.
-    tweets = await collection.aggregate([
-      // Take the created_at field that has a string value and can't be sorted
-      // and create a new convertedDate field that has a ISODate value.
-      { $addFields: { convertedDate: { $toDate: '$created_at' } } },
-      // Sort descending from the most recent tweet to later ones.
-      { $sort: { convertedDate: -1 } },
-      // Return only 30 recent tweets, not all the tweets that exist in the collection.
-      { $limit: 30 },
-      // Return only id, created_at and text, not all the fields that a document has.
-      { $project: { _id: 0, id: 1, created_at: 1, text: 1 } }
-    ]).toArray();
+// Start the server.
+const serverPort = Number(process.env.PORT) || app.get('config').server.port;
 
-    // A color's hex value and a name are stored inside a text string.
-    // Parse the string to extract these values.
-    tweets = tweets.map((item) => {
-      const textAll = item.text.split('. #');
-      const colorHex = `#${textAll[1].substring(0, 6)}`;
-      const textWithColorName = textAll[0].split('The color of the sky in Berlin is ');
-      const colorName = textWithColorName[1];
-
-      return {
-        id: item.id,
-        created_at: item.created_at,
-        text: item.text,
-        colorHex,
-        colorName
-      };
-    });
-  }
-
-  res.json({ tweets });
-});
-
-app.use('/api', Object.values(middleware), router);
-app.listen(SERVER_PORT);
-
-console.log(`App listening on ${SERVER_PORT}`);
+app.listen(serverPort);
+console.log(`App listening on ${serverPort}`);

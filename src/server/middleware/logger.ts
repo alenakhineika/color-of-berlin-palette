@@ -1,19 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 
-interface IReqs { date: string, method: string, url: string, body: unknown }
+import { IReqs } from '../types/interfaces';
 
 const reqs: IReqs[] = [];
 
-export default (req: Request, res: Response, next: NextFunction): void => {
+export default (request: Request, response: Response, next: NextFunction): void => {
   console.clear();
 
   const date: Date = new Date();
 
   reqs.push({
     date: `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`,
-    method: req.method,
-    url: `${req.baseUrl}${req.url}`,
-    body: req.body
+    method: request.method,
+    url: `${request.baseUrl}${request.url}`,
+    body: request.body
   });
 
   const len: number = reqs.length;

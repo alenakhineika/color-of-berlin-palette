@@ -15,8 +15,8 @@ interface AppState {
 export default class App extends React.Component<{}, AppState> {
   state: AppState = { tweets: [] };
 
-  // When a user clicks the `Get Thirty Recent Tweets From DB` button
-  // send a request to server/index.ts and wait for results.
+  // When a user clicks the `Get Thirty Recent Tweets From DB` button,
+  // send a request to the server and wait for results.
   // After receiving results update the React state to fire page rendering.
   getThirtyRecentTweets = (): void => {
     fetch(apiRoute.getRoute('getTweets'))
@@ -44,7 +44,7 @@ export default class App extends React.Component<{}, AppState> {
     const rows: JSX.Element[] = [];
     let offset = 0;
 
-    // One month contains 4 weeks, therefore we use a loop to not repeat the same code for each week.
+    // Use a loop to not repeat the same code for each week of the month.
     for (let week = 0; week < 4; week++) {
       rows.push(this.getWeekOfMonth(offset));
       offset += 7;
