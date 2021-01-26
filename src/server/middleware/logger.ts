@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { IReqs } from '../types/interfaces';
+import { IReqs } from '../../shared/types/interfaces';
 
 const reqs: IReqs[] = [];
 

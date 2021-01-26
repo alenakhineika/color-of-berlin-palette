@@ -1,7 +1,7 @@
 import { Express, Request, Response, NextFunction } from 'express';
 
-import { ConfigRoute } from '../types/types';
-import { HTTPMethod } from '../types/enums';
+import { ConfigRoute } from '../../shared/types/types';
+import { HTTPMethod } from '../../shared/types/enums';
 
 export default (app: Express): void => {
   app.set('routes.path', new Map());

@@ -1,7 +1,30 @@
 import { MongoClient, Db, Collection } from 'mongodb';
+import React from 'react';
+import { renderToString  } from 'react-dom/server';
 import { Request, Response, NextFunction } from 'express';
 
-exports.index = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+import App from '../../client/app';
+
+exports.index = async (request: Request, response: Response): Promise<void> => {
+  const html = ({ body }: { body: string }) => `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <link href="main.css" rel="stylesheet">
+      </head>
+      <body>
+        <div id="root">${body}</div>
+      </body>
+      <script src="main.bundle.js" defer></script>
+    </html>
+  `;
+
+  const body = renderToString(React.createElement(App));
+
+  response.send(html({ body }));
+};
+
+exports.getTweets = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
   const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
    // Access the `colorofberlin` database.

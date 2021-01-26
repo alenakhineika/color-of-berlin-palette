@@ -7,7 +7,7 @@ const writeToFile = async (data: EJSON.SerializableTypes[]): Promise<void> => {
   const [date, month, year] = new Date().toLocaleDateString('en-US').split('/');
   const distPath: string = path.join(
     __dirname,
-    '../../out',
+    '../out',
     `colorofberlin-tweets-${date}-${month}-${year}-${data.length}.json`,
   );
 

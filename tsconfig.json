@@ -1,28 +1,16 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "noImplicitAny": false,
     "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "lib": ["es6", "dom"],
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "removeComments": true,
     "outDir": "./build",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "resolveJsonModule": true,
-    "target": "es6"
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
-  "include": [
-    "./src/server"
-  ],
-  "exclude": [
-    "./src/client"
-  ]
+  "exclude": ["node_modules"]
 }
