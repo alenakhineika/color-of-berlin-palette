@@ -12,7 +12,7 @@ const MONGODB_COLLECTION = 'tweets';
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  
+
   try {
     await client.connect();
 

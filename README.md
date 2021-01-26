@@ -26,7 +26,7 @@ TWITTER_BEARER_TOKEN=
 
 You also need MongoDB installed to run the project: https://docs.mongodb.com/manual/installation/
 
-If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json` from the `public` folder in the root directory of the project. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import the sample JSON to MongoDB.
+If you don't want to create a Twitter developer account, you can use the `tweets-sample-dataset-200.json`. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import the sample JSON to MongoDB.
 
 ## How to fetch data
 
@@ -52,10 +52,20 @@ There is also an option to save tweets to the file system and use them outside o
 
 ## Run the project
 
-Start the server and the client in development mode:
+Start the server and the client at `http://localhost:3000/`:
 
 ```
-> npm run start:dev
+> npm run start
 ```
 
-The server is running with nodemon and the client is served by Webpack Dev Server with hot reloading enabled. The `http://localhost:3000/` page will be automatically opened in a web browser.
+## Features
+
+- Twitter API
+- Webpack 4
+- React 16
+- Server-side rendering
+- Express
+- TypeScript
+- Less
+- Eslint
+- Prettier

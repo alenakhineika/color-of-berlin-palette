@@ -1,8 +1,10 @@
 import * as React from 'react';
-import '../less/app.less';
-import apiRoute from '../router';
 
-interface AppState {
+import apiRoute from './router';
+
+import './app.less';
+
+interface State {
   tweets: {
     id: number,
     created_at: string,
@@ -12,8 +14,8 @@ interface AppState {
   }[] | []
 }
 
-export default class App extends React.Component<{}, AppState> {
-  state: AppState = { tweets: [] };
+export default class App extends React.Component<{}, State> {
+  state: State = { tweets: [] };
 
   // When a user clicks the `Get Thirty Recent Tweets From DB` button,
   // send a request to the server and wait for results.

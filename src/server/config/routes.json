@@ -7,10 +7,10 @@
     "component": "App"
   },
   {
-    "name": "index",
+    "name": "getTweets",
     "method": "GET",
-    "path": "/getTweets/",
-    "handler": "generic/index",
+    "path": "/getTweets",
+    "handler": "generic/getTweets",
     "component": "App"
   }
 ]

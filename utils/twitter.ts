@@ -3,7 +3,7 @@ import ora from 'ora';
 import Twitter from 'twitter';
 import util from 'util';
 
-import { LastSavedTweet, TwitterParams, GetTweets } from '../types/types';
+import { LastSavedTweet, TwitterParams, GetTweets } from '../src/shared/types/types';
 
 const envConstants = process.env.NODE_ENV !== 'production'
   ? dotenv.config().parsed
@@ -40,7 +40,7 @@ const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.Res
 
     while (done === false) {
       const nextTweets = await getTweets('statuses/user_timeline', twitterParameters);
-  
+
       if (nextTweets.length === 200) {
         if (lastSavedTweet) {
           twitterParameters.since_id = (nextTweets.shift() || {}).id;

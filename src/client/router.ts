@@ -1,4 +1,4 @@
-import config from './config';
+import serverSettings from '../server/config';
 
 interface IApi {
   host: string;
@@ -17,6 +17,7 @@ class Api implements IApi {
   }
 }
 
-const apiRoute: Api = new Api(`http://${config.client.hostname}:${config.client.port}`);
+const { hostname, port } = serverSettings.server;
+const apiRoute: Api = new Api(`http://${hostname}:${port}`);
 
 export default apiRoute;

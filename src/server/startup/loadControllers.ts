@@ -1,7 +1,7 @@
 import { Express } from 'express';
 
-import { ConfigRoute, RequestRoute } from '../types/types';
-import { HTTPMethod } from '../types/enums';
+import { ConfigRoute, RequestRoute } from '../../shared/types/types';
+import { HTTPMethod } from '../../shared/types/enums';
 
 export default (app: Express): void => {
   const routes: RequestRoute = { byName: {}, byPath: {}, raw: [] };
