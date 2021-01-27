@@ -52,10 +52,11 @@ There is also an option to save tweets to the file system and use them outside o
 
 ## Run the project
 
-Start the server and the client at `http://localhost:3000/`:
+Build and start the project at `http://localhost:3000/`:
 
 ```
-> npm run start
+> npm run build
+> npm start
 ```
 
 ## Features

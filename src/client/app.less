@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  background: #fefdff;
 }
 
 body {
@@ -8,23 +9,55 @@ body {
 }
 
 .month {
+  min-width: 750px;
   max-width: 860px;
   margin: 20px auto;
 }
 
-.week {
+.weekOfMonth {
+  padding: 10px 20px;
+  justify-content: space-between;
   display: flex;
   height: 110px;
 }
 
-.day {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
+.dayOfMonth {
+  width: 100px;
+  border-radius: 100px;
   color: white;
   padding: 5px;
-  background-color: transparentize(white, 0.30);
-  box-shadow: 
-    -1px -1px white, 
-    inset -1px -1px 0 0 white;
+}
+
+.week {
+  min-width: 750px;
+  max-width: 860px;
+  margin: 20px auto;
+}
+
+.weekByDays {
+  padding: 10px 20px;
+  justify-content: space-between;
+  display: flex;
+  height: 310px;
+}
+
+.dayOfWeek {
+  width: 100px;
+  border-radius: 100px;
+  color: white;
+  padding: 5px;
+}
+
+.weekByHours {
+  padding: 10px 20px;
+  justify-content: space-between;
+  display: flex;
+  height: 110px;
+}
+
+.hourOfDay {
+  width: 100px;
+  border-radius: 100px;
+  color: white;
+  padding: 5px;
 }

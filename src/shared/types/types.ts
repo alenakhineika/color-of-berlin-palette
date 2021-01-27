@@ -33,3 +33,18 @@ export type GetTweets = (
   arg1: string,
   arg2: TwitterParams
 ) => Promise<any>;
+
+export type Tweet = {
+  id: number,
+  created_at: EJSON.SerializableTypes,
+  text: string,
+  colorHex: string,
+  colorName: string
+};
+
+export type TweetsByDay = {
+  tweetsByDay: Tweet[] | [],
+  day: EJSON.SerializableTypes
+};
+
+export type Tweets = TweetsByDay[];
