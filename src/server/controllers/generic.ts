@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString  } from 'react-dom/server';
 import { Request, Response, NextFunction } from 'express';
 
-import App from '../../client/app';
+import App from '../../client/components/app';
 import { Tweet, TweetsByDay, Tweets } from '../../shared/types/types';
 
 const getColorsFromText = (tweets: Tweets): Tweets => {

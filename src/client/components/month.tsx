@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Tweets } from '../shared/types/types';
+import { Tweets } from '../../shared/types/types';
 
 interface Proprs {
   tweets: Tweets

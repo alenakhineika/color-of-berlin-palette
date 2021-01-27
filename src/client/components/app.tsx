@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import apiRoute from './router';
-import { Tweets } from '../shared/types/types';
+import apiRoute from '../router';
+import { Tweets } from '../../shared/types/types';
 import Month from './month';
 import Week from './week';
 
-import './app.less';
+import '../app.less';
 
 interface State {
   tweets: Tweets

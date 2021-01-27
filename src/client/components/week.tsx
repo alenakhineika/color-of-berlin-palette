@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { hexAverage, lightenDarkenColor } from './utils';
-import { Tweets } from '../shared/types/types';
+import { hexAverage, lightenDarkenColor } from '../utils';
+import { Tweets } from '../../shared/types/types';
 
 interface Proprs {
   tweets: Tweets
