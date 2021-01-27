@@ -43,12 +43,11 @@ export default class App extends React.Component<{}, State> {
   render(): JSX.Element {
     return (
       <div>
-        <p>Length: {this.state.tweets.length}</p>
-        <div>
-          <button type="button" onClick={this.getRecentTweets}>
+        <div className="buttons">
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={this.getRecentTweets}>
             Get Recent Tweets From DB
           </button>
-          <button type="button" onClick={this.getLastWeekTweets}>
+          <button type="button" className="btn btn-outline-secondary btn-sm" onClick={this.getLastWeekTweets}>
             Get Last Week Tweets From DB
           </button>
         </div>
