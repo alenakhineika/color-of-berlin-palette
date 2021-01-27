@@ -36,18 +36,16 @@ export const lightenDarkenColor = (col: string, amt: number): string => {
 
 const _padToTwo = (numberString: string) => {
   if (numberString.length < 2) {
-      numberString = '0' + numberString;
+      numberString = `0${numberString}`;
   }
 
   return numberString;
 };
 
 export const hexAverage = (dayGradient: string[]): string => {
-  const args = dayGradient;
-
-  return args
+  return dayGradient
     .reduce((previousValue: number[], currentValue: string) => {
-      const macth = currentValue .replace(/^#/, '').match(/.{2}/g);
+      const macth = currentValue.replace(/^#/, '').match(/.{2}/g);
 
       if (macth) {
         return macth?.map((value: string, index: number) => (previousValue[index] + parseInt(value, 16)));
@@ -56,6 +54,6 @@ export const hexAverage = (dayGradient: string[]): string => {
       }
     }, [0, 0, 0])
     .reduce((previousValue: string, currentValue: number) => {
-      return previousValue + _padToTwo(Math.floor(currentValue / args.length).toString(16));
+      return previousValue + _padToTwo(Math.floor(currentValue / dayGradient.length).toString(16));
     }, '#');
 };

@@ -26,12 +26,21 @@ export default class App extends React.Component<{}, State> {
       .then(res => this.setState({ tweets: res.tweets }));
   };
 
+  renderLayout(): JSX.Element {
+    switch(this.state.tweets.length) {
+      case 28:
+        return <Month tweets={this.state.tweets} />;
+      case 7:
+        return <Week tweets={this.state.tweets} />;
+      default:
+        return <div />;
+    }
+  }
+
   // Listens for this.state.tweets changes and for each change renders the page
   // to reflect these changes. Here you can specify different page layouts
   // depending on the data format received from the server.
   render(): JSX.Element {
-    const tweets = this.state.tweets;
-
     return (
       <div>
         <p>Length: {this.state.tweets.length}</p>
@@ -43,8 +52,7 @@ export default class App extends React.Component<{}, State> {
             Get Last Week Tweets From DB
           </button>
         </div>
-        {tweets.length === 28 ? <Month tweets={this.state.tweets} /> : null}
-        {tweets.length === 7 ? <Week tweets={this.state.tweets} /> : null}
+        {this.renderLayout()}
       </div>
     );
   }
