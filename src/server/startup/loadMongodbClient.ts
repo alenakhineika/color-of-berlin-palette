@@ -7,11 +7,5 @@ export default async (app: Express): Promise<void> => {
     useUnifiedTopology: true,
   });
 
-  try {
-    await client.connect();
-  } catch (error) {
-    console.error(`Connect to MongoDB failed: ${error.message}`);
-  }
-
   app.set('service.mongodbClient', () => client);
 };
