@@ -1,9 +1,11 @@
+import HTTPStatus from 'http-status';
 import { MongoClient, Db, Collection } from 'mongodb';
 import React from 'react';
 import { renderToString  } from 'react-dom/server';
 import { Request, Response, NextFunction } from 'express';
 
 import App from '../../client/components/app';
+import { HttpException } from '../httpException';
 import { Tweet, TweetsByDay, Tweets } from '../../shared/types/types';
 
 const getColorsFromText = (tweets: Tweets): Tweets => {
@@ -15,7 +17,7 @@ const getColorsFromText = (tweets: Tweets): Tweets => {
       const colorHex = `#${textAll[1].substring(0, 6)}`;
       const textWithColorName = textAll[0].split('The color of the sky in Berlin is ');
       const colorName = textWithColorName[1];
-  
+
       tweetsByDay.push({
         id: tweet.id,
         created_at: tweet.created_at,
@@ -51,7 +53,11 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
   response.send(html({ body }));
 };
 
-exports.getRecentTweets = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+exports.getRecentTweets = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response> => {
   const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
    // Access the `colorofberlin` database.
@@ -62,9 +68,7 @@ exports.getRecentTweets = async (request: Request, response: Response, next: Nex
   let tweets: Tweets = [];
 
   if (!collection) {
-    response.json({ tweets });
-
-    return;
+    return response.json({ tweets });
   }
 
   try {
@@ -91,11 +95,18 @@ exports.getRecentTweets = async (request: Request, response: Response, next: Nex
 
     response.json({ tweets });
   } catch (error) {
-    next(new Error(error));
+    next(new HttpException({
+      status: HTTPStatus.INTERNAL_SERVER_ERROR,
+      message: error.message
+    }));
   }
 };
 
-exports.getLastWeekTweets = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+exports.getLastWeekTweets = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response> => {
   const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
    // Access the `colorofberlin` database.
@@ -106,9 +117,7 @@ exports.getLastWeekTweets = async (request: Request, response: Response, next: N
   let tweets: Tweets = [];
 
   if (!collection) {
-    response.json({ tweets });
-
-    return;
+    return response.json({ tweets });
   }
 
   try {
@@ -119,17 +128,17 @@ exports.getLastWeekTweets = async (request: Request, response: Response, next: N
       { $sort: { day: -1 } },
       { $group: {
         _id: {
-          day: { $dayOfMonth: '$day' }, 
-          month: { $month: '$day' }, 
-          year: { $year: '$day' } }, 
+          day: { $dayOfMonth: '$day' },
+          month: { $month: '$day' },
+          year: { $year: '$day' } },
           tweetsByDay: { $push: { id: '$id', created_at: '$day', text: '$text' } }
         }
       },
       { $addFields: {
           day: {
             $dateFromParts: {
-              year: '$_id.year', 
-              month: '$_id.month', 
+              year: '$_id.year',
+              month: '$_id.month',
               day: '$_id.day'
             }
           }
@@ -144,6 +153,9 @@ exports.getLastWeekTweets = async (request: Request, response: Response, next: N
 
     response.json({ tweets });
   } catch (error) {
-    next(new Error(error));
+    next(new HttpException({
+      status: HTTPStatus.INTERNAL_SERVER_ERROR,
+      message: error.message
+    }));
   }
 };

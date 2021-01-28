@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import express, { Express, Request, Response, NextFunction } from 'express';
+import express, { Express } from 'express';
 
 import middleware from './middleware';
 import startup from './startup';
