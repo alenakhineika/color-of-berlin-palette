@@ -20,21 +20,14 @@ enum activeView {
 export default class App extends React.Component<{}, State> {
   state: State = { tweets: [] };
 
-  getRecentTweets = (): void => {
-    fetch(apiRoute.getRoute(activeView.GET_RECENT_TWEETS))
-      .then(res => res.json())
-      .then(res => this.setState({
-        tweets: res.tweets,
-        activeView: activeView.GET_RECENT_TWEETS
-      }));
-  };
+  getTweets = (activeView: string, event: MouseEvent): void => {
+    event.preventDefault();
 
-  getLastWeekTweets = (): void => {
-    fetch(apiRoute.getRoute(activeView.GET_LAST_WEEK_TWEETS))
+    fetch(apiRoute.getRoute(activeView))
       .then(res => res.json())
       .then(res => this.setState({
         tweets: res.tweets,
-        activeView: activeView.GET_LAST_WEEK_TWEETS
+        activeView
       }));
   };
 
@@ -59,7 +52,7 @@ export default class App extends React.Component<{}, State> {
           name="options"
           id={`button${activeView}`}
           autoComplete="off"
-          onClick={this[activeView]}
+          onClick={this.getTweets.bind(this, activeView)}
           checked={this.state.activeView === activeView ? true : false} /> {name}
       </label>
     );
