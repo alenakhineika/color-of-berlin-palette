@@ -32,8 +32,14 @@ const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.Res
     };
 
     if (lastSavedTweet) {
-      twitterParameters.since_id = lastSavedTweet.id;
-    } {
+      // If there are some tweets already saved to mongodb, combine since_id and max_id
+      // parameters to fetch tweets starting from the most recent one.
+      // The first request to a timeline endpoint should only specify a count.
+      // When processing responses, keep track of the lowest id received,
+      // this id should be passed as the value of the max_id parameter for the next request.
+      // We stop fetching when since_id is equal to the biggest twitter id in the database.
+      twitterParameters.since_id = lastSavedTweet.id.toString();
+    } else {
       tweets = await getTweets('statuses/user_timeline', twitterParameters);
       twitterParameters.max_id = (tweets.pop() || {}).id;
     }
@@ -42,16 +48,12 @@ const fetchTweets = async (lastSavedTweet?: LastSavedTweet): Promise<Twitter.Res
       const nextTweets = await getTweets('statuses/user_timeline', twitterParameters);
 
       if (nextTweets.length === 200) {
-        if (lastSavedTweet) {
-          twitterParameters.since_id = (nextTweets.shift() || {}).id;
-        } else {
-          twitterParameters.max_id = (nextTweets.pop() || {}).id;
-        }
-
-        tweets = tweets.concat(nextTweets);
+        twitterParameters.max_id = (nextTweets.pop() || {}).id;
       } else {
         done = true;
       }
+
+      tweets = tweets.concat(nextTweets);
     }
 
     const tweet = tweets.length === 1 ? 'tweet' : 'tweets';

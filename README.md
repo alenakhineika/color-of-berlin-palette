@@ -7,7 +7,7 @@ The `Color of Berlin Palette` project fetches colors of the sky in Berlin from t
 Clone the project and install dependencies:
 
 ```
-> git https://github.com/alenakhineika/color-of-berlin-palette .
+> git clone git@github.com:alenakhineika/color-of-berlin-palette.git .
 > npm i
 ```
 
