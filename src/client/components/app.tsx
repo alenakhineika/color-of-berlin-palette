@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import apiRoute from '../router';
 import { Tweets } from '../../shared/types/types';
-import Month from './month';
+import Last from './last';
 import Week from './week';
 
 import '../app.less';
@@ -13,8 +13,8 @@ interface State {
 }
 
 enum activeView {
-  GET_RECENT_TWEETS = 'getRecentTweets',
-  GET_LAST_WEEK_TWEETS = 'getLastWeekTweets'
+  GET_LAST_TWEETS = 'getLastTweets',
+  GET_WEEK_TWEETS = 'getWeekTweets'
 }
 
 export default class App extends React.Component<{}, State> {
@@ -34,7 +34,7 @@ export default class App extends React.Component<{}, State> {
   renderLayout(): JSX.Element {
     switch(this.state.tweets.length) {
       case 28:
-        return <Month tweets={this.state.tweets} />;
+        return <Last tweets={this.state.tweets} />;
       case 7:
         return <Week tweets={this.state.tweets} />;
       default:
@@ -65,8 +65,8 @@ export default class App extends React.Component<{}, State> {
     return (
       <div>
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          {this.renderButton(activeView.GET_RECENT_TWEETS, 'Get Recent Tweets From DB')}
-          {this.renderButton(activeView.GET_LAST_WEEK_TWEETS, 'Get Last Week Tweets From DB')}
+          {this.renderButton(activeView.GET_LAST_TWEETS, 'Get last 28 Tweets')}
+          {this.renderButton(activeView.GET_WEEK_TWEETS, 'Get last 7 days Tweets')}
         </div>
         {this.renderLayout()}
       </div>

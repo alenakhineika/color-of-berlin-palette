@@ -53,7 +53,7 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
   response.send(html({ body }));
 };
 
-exports.getRecentTweets = async (
+exports.getLastTweets = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -72,20 +72,13 @@ exports.getRecentTweets = async (
   }
 
   try {
-    // Use aggregation to find 28 recent tweets
-    // and modify the resulting array to match the expected data format.
     tweets = await collection.aggregate([
-      // Take the created_at field that has a string value and can't be sorted
-      // and create a new convertedDate field that has a ISODate value.
       { $addFields: {
         day: { $toDate: '$created_at' },
         tweetsByDay: [{ id: '$id', created_at: '$day', text: '$text' }] }
       },
-      // Sort descending from the most recent tweet to later ones.
       { $sort: { day: -1 } },
-      // Return only 28 recent tweets, not all the tweets that exist in the collection.
       { $limit: 28 },
-      // Return only id, created_at and text, not all the fields that a document has.
       { $project: { tweetsByDay: 1, day: 1, _id: 0 } }
     ]).toArray();
 
@@ -102,18 +95,15 @@ exports.getRecentTweets = async (
   }
 };
 
-exports.getLastWeekTweets = async (
+exports.getWeekTweets = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<Response> => {
   const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
-   // Access the `colorofberlin` database.
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
-  // Access the `tweets` collection.
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  // The data format expected by the client.
   let tweets: Tweets = [];
 
   if (!collection) {
@@ -121,8 +111,6 @@ exports.getLastWeekTweets = async (
   }
 
   try {
-    // Use aggregation to find 28 recent tweets
-    // and modify the resulting array to match the expected data format.
     tweets = await collection.aggregate([
       { $addFields: { day: { $toDate: '$created_at' } } },
       { $sort: { day: -1 } },

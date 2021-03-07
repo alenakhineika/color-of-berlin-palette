@@ -13,11 +13,14 @@ export default class Week extends React.Component<Proprs, {}> {
     const weekByHours: JSX.Element[] = [];
 
     for (let day = 0; day < 7; day++) {
-      const dayGradient: string[] = [];
+      let dayGradient: string[] = [];
       
       this.props.tweets[day].tweetsByDay.forEach((item, index) => {
         dayGradient.push(this.props.tweets[day].tweetsByDay[index].colorHex);
       });
+
+      const hexRegex = /(#[a-zA-Z0-9]{6})/gm;
+      dayGradient = dayGradient.filter((item) => hexRegex.exec(item));
 
       weekByDays.push(
         <div
@@ -27,10 +30,6 @@ export default class Week extends React.Component<Proprs, {}> {
             backgroundImage: `linear-gradient(${dayGradient.join(', ')})`
           }} />
       );
-      
-      this.props.tweets[day].tweetsByDay.forEach((item, index) => {
-        dayGradient.push(this.props.tweets[day].tweetsByDay[index].colorHex);
-      });
 
       const averageDayGradient = hexAverage(dayGradient);
       const darkerDayGradient = lightenDarkenColor(averageDayGradient, 80);

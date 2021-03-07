@@ -7,17 +7,17 @@
     "component": "App"
   },
   {
-    "name": "getRecentTweets",
+    "name": "getLastTweets",
     "method": "GET",
-    "path": "/getRecentTweets",
-    "handler": "generic/getRecentTweets",
+    "path": "/getLastTweets",
+    "handler": "generic/getLastTweets",
     "component": "App"
   },
   {
-    "name": "getLastWeekTweets",
+    "name": "getWeekTweets",
     "method": "GET",
-    "path": "/getLastWeekTweets",
-    "handler": "generic/getLastWeekTweets",
+    "path": "/getWeekTweets",
+    "handler": "generic/getWeekTweets",
     "component": "App"
   }
 ]
