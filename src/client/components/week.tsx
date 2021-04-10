@@ -13,14 +13,11 @@ export default class Week extends React.Component<Proprs, {}> {
     const weekByHours: JSX.Element[] = [];
 
     for (let day = 0; day < 7; day++) {
-      let dayGradient: string[] = [];
+      const dayGradient: string[] = [];
       
       this.props.tweets[day].tweetsByDay.forEach((item, index) => {
         dayGradient.push(this.props.tweets[day].tweetsByDay[index].colorHex);
       });
-
-      const hexRegex = /(#[a-zA-Z0-9]{6})/gm;
-      dayGradient = dayGradient.filter((item) => hexRegex.exec(item));
 
       weekByDays.push(
         <div

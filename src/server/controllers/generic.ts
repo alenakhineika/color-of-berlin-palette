@@ -8,6 +8,8 @@ import App from '../../client/components/app';
 import { HttpException } from '../httpException';
 import { Tweet, TweetsByDay, Tweets } from '../../shared/types/types';
 
+const HEX_COLOR_REGEX = /(#[a-zA-Z0-9]{6})/;
+
 const getColorsFromText = (tweets: Tweets): Tweets => {
   return tweets.map((item: TweetsByDay) => {
     const tweetsByDay: Tweet[] = [];
@@ -73,10 +75,13 @@ exports.getLastTweets = async (
 
   try {
     tweets = await collection.aggregate([
-      { $addFields: {
-        day: { $toDate: '$created_at' },
-        tweetsByDay: [{ id: '$id', created_at: '$day', text: '$text' }] }
+      {
+        $addFields: {
+          day: { $toDate: '$created_at' },
+          tweetsByDay: [{ id: '$id', created_at: '$day', text: '$text' }]
+        }
       },
+      { $match: { text: { $regex: HEX_COLOR_REGEX } } },
       { $sort: { day: -1 } },
       { $limit: 28 },
       { $project: { tweetsByDay: 1, day: 1, _id: 0 } }
@@ -113,16 +118,20 @@ exports.getWeekTweets = async (
   try {
     tweets = await collection.aggregate([
       { $addFields: { day: { $toDate: '$created_at' } } },
+      { $match: { text: { $regex: HEX_COLOR_REGEX } } },
       { $sort: { day: -1 } },
-      { $group: {
-        _id: {
-          day: { $dayOfMonth: '$day' },
-          month: { $month: '$day' },
-          year: { $year: '$day' } },
+      {
+        $group: {
+          _id: {
+            day: { $dayOfMonth: '$day' },
+            month: { $month: '$day' },
+            year: { $year: '$day' }
+          },
           tweetsByDay: { $push: { id: '$id', created_at: '$day', text: '$text' } }
         }
       },
-      { $addFields: {
+      {
+        $addFields: {
           day: {
             $dateFromParts: {
               year: '$_id.year',
