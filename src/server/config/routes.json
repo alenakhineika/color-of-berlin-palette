@@ -7,17 +7,17 @@
     "component": "App"
   },
   {
-    "name": "getLastTweets",
+    "name": "getThirtyTweetsColors",
     "method": "GET",
-    "path": "/getLastTweets",
-    "handler": "generic/getLastTweets",
+    "path": "/getThirtyTweetsColors",
+    "handler": "generic/getThirtyTweetsColors",
     "component": "App"
   },
   {
-    "name": "getWeekTweets",
+    "name": "getSevenDaysColors",
     "method": "GET",
-    "path": "/getWeekTweets",
-    "handler": "generic/getWeekTweets",
+    "path": "/getSevenDaysColors",
+    "handler": "generic/getSevenDaysColors",
     "component": "App"
   }
 ]

@@ -55,7 +55,7 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
   response.send(html({ body }));
 };
 
-exports.getLastTweets = async (
+exports.getThirtyTweetsColors = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -100,7 +100,7 @@ exports.getLastTweets = async (
   }
 };
 
-exports.getWeekTweets = async (
+exports.getSevenDaysColors = async (
   request: Request,
   response: Response,
   next: NextFunction

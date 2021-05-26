@@ -13,8 +13,8 @@ interface State {
 }
 
 enum activeView {
-  GET_LAST_TWEETS = 'getLastTweets',
-  GET_WEEK_TWEETS = 'getWeekTweets'
+  GET_THIRTY_TWEETS_COLORS = 'getThirtyTweetsColors',
+  GET_SEVEN_DAYS_COLORS = 'getSevenDaysColors'
 }
 
 export default class App extends React.Component<{}, State> {
@@ -65,8 +65,8 @@ export default class App extends React.Component<{}, State> {
     return (
       <div>
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          {this.renderButton(activeView.GET_LAST_TWEETS, 'Get last 28 Tweets')}
-          {this.renderButton(activeView.GET_WEEK_TWEETS, 'Get last 7 days Tweets')}
+          {this.renderButton(activeView.GET_THIRTY_TWEETS_COLORS, 'Get last 28 Tweets')}
+          {this.renderButton(activeView.GET_SEVEN_DAYS_COLORS, 'Get last 7 days Tweets')}
         </div>
         {this.renderLayout()}
       </div>
