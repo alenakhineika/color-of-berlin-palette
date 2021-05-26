@@ -36,10 +36,10 @@ export type GetTweets = (
 
 export type Tweet = {
   id: number,
-  created_at: EJSON.SerializableTypes,
   text: string,
-  colorHex: string,
-  colorName: string
+  created_at?: EJSON.SerializableTypes,
+  colorHex?: string,
+  colorName?: string
 };
 
 export type TweetsByDay = {

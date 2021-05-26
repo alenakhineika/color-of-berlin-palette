@@ -10,7 +10,8 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node", "mocha"]
   },
   "exclude": ["node_modules"]
 }
