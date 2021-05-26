@@ -71,3 +71,5 @@ Build and start the project at `http://localhost:3000/`:
 - Bootstrap
 - Eslint
 - Prettier
+- Mocha
+- Chai
