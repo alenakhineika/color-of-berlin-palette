@@ -10,7 +10,7 @@ import { Tweet, TweetsByDay, Tweets } from '../../shared/types/types';
 
 const HEX_COLOR_REGEX = /(#[a-zA-Z0-9]{6})/;
 
-const getColorsFromText = (tweets: Tweets): Tweets => {
+export const getColorsFromText = (tweets: Tweets): Tweets => {
   return tweets.map((item: TweetsByDay) => {
     const tweetsByDay: Tweet[] = [];
 
@@ -89,9 +89,9 @@ exports.getThirtyTweetsColors = async (
 
     // A color's hex value and a name are stored inside a text string.
     // Parse the string to extract these values.
-    tweets = getColorsFromText(tweets);
+    const parsedTweets = getColorsFromText(tweets);
 
-    response.json({ tweets });
+    response.json({ tweets: parsedTweets });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,
