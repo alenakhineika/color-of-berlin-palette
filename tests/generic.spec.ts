@@ -1,11 +1,10 @@
-import { getColorsFromText } from '../src/server/controllers/generic';
 import { expect } from 'chai';
-
-import * as util from 'util';
+import { getColorsFromText } from '../src/server/controllers/generic';
+import { Tweets } from '../src/shared/types/types';
 
 describe('Generic Controller', () => {
   it('get colors from text', () => {
-    const tweets = [
+    const tweets: Tweets = [
       {
         tweetsByDay: [
           {
@@ -16,7 +15,7 @@ describe('Generic Controller', () => {
         day: '2021-03-09T00:00:00.000Z'
       }
     ];
-    const parsedTweets = [
+    const parsedTweets: Tweets = [
       {
         tweetsByDay: [
           {

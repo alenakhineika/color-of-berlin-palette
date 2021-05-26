@@ -89,9 +89,9 @@ exports.getThirtyTweetsColors = async (
 
     // A color's hex value and a name are stored inside a text string.
     // Parse the string to extract these values.
-    const parsedTweets = getColorsFromText(tweets);
+    tweets = getColorsFromText(tweets);
 
-    response.json({ tweets: parsedTweets });
+    response.json({ tweets });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,

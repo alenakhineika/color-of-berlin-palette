@@ -19,7 +19,7 @@
     "prettier-format:win32": "prettier --config .prettierrc \"./src/**/*.ts\" --write",
     "prettier-format:darwin:linux": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prettier-format:default": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "test": "cross-env TS_NODE_PROJECT=\"tsconfig.json\" mocha -r ts-node/register test/**/*.spec.ts --require ignore-styles"
+    "test": "cross-env TS_NODE_PROJECT=\"tsconfig.json\" mocha -r ts-node/register tests/**/*.spec.ts --require ignore-styles"
   },
   "precommit": [
     "check"
