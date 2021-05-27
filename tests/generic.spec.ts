@@ -3,7 +3,7 @@ import { getColorsFromText } from '../src/server/controllers/generic';
 import { Tweets } from '../src/shared/types/types';
 
 describe('Generic Controller', () => {
-  it('get colors from text', () => {
+  it('gets colors from text', () => {
     const tweets: Tweets = [
       {
         tweetsByDay: [
