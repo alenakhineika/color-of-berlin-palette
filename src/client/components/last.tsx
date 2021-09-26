@@ -14,10 +14,10 @@ export default class Last extends React.Component<Proprs, {}> {
     // to create only one div and use it for all tweets.
     // Note that when you use loops React requires unique keys for components to distinguish them.
     for (let item = 0; item < 7; item++) {
-      const leftColor = this.props.tweets[offset + item].tweetsByDay[0].colorHex;
+      const leftColor = `#${this.props.tweets[offset + item].tweetsByDay[0].colorHex}`;
       const rightColor = this.props.tweets[offset + item + 1]
-        ? this.props.tweets[offset + item + 1].tweetsByDay[0].colorHex // Next tweet color.
-        : this.props.tweets[0].tweetsByDay[0].colorHex; // Prev tweet color.
+        ? `#${this.props.tweets[offset + item + 1].tweetsByDay[0].colorHex}` // Next tweet color.
+        : `#${this.props.tweets[0].tweetsByDay[0].colorHex}`; // Prev tweet color.
 
       blocks.push(
         <div
@@ -32,7 +32,7 @@ export default class Last extends React.Component<Proprs, {}> {
     return (<div key={`line${offset/7+1}`} className="line">{blocks}</div>);
   }
 
-  render(): JSX.Element {
+  render(): React.ReactNode {
     const rows: JSX.Element[] = [];
     let offset = 0;
 

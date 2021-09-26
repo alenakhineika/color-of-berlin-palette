@@ -43,7 +43,7 @@ export type Tweet = {
 };
 
 export type TweetsByDay = {
-  tweetsByDay: Tweet[] | [],
+  tweetsByDay: Tweet[],
   day: EJSON.SerializableTypes
 };
 
