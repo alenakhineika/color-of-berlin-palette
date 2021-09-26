@@ -19,5 +19,12 @@
     "path": "/getSevenDaysColors",
     "handler": "generic/getSevenDaysColors",
     "component": "App"
+  },
+  {
+    "name": "getAllColors",
+    "method": "GET",
+    "path": "/getAllColors",
+    "handler": "generic/getAllColors",
+    "component": "App"
   }
 ]

@@ -7,8 +7,6 @@
   "license": "ISC",
   "scripts": {
     "clean": "rimraf ./dist/*",
-    "save-tweets-to-file": "npm run build && node dist/saveTweetsToFile.js",
-    "save-tweets-to-mongodb": "npm run build && node dist/saveTweetsToMongodb.js",
     "build-server": "webpack --config webpack.config.server.js",
     "build-client": "webpack --config webpack.config.client.js",
     "build": "npm run clean && npm run build-client && npm run build-server",

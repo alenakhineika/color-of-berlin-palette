@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import apiRoute from '../router';
 import { Tweets } from '../../shared/types/types';
+import All from './all';
 import Last from './last';
 import Week from './week';
 
@@ -14,7 +15,8 @@ interface State {
 
 enum activeView {
   GET_THIRTY_TWEETS_COLORS = 'getThirtyTweetsColors',
-  GET_SEVEN_DAYS_COLORS = 'getSevenDaysColors'
+  GET_SEVEN_DAYS_COLORS = 'getSevenDaysColors',
+  GET_ALL_COLORS = 'getAllColors'
 }
 
 export default class App extends React.Component<{}, State> {
@@ -31,18 +33,20 @@ export default class App extends React.Component<{}, State> {
       }));
   };
 
-  renderLayout(): JSX.Element {
-    switch(this.state.tweets.length) {
-      case 28:
+  renderLayout(): React.ReactNode {
+    switch(this.state.activeView) {
+      case activeView.GET_THIRTY_TWEETS_COLORS:
         return <Last tweets={this.state.tweets} />;
-      case 7:
+      case activeView.GET_SEVEN_DAYS_COLORS:
         return <Week tweets={this.state.tweets} />;
+      case activeView.GET_ALL_COLORS:
+        return <All tweets={this.state.tweets} />;
       default:
         return <div />;
     }
   }
 
-  renderButton(activeView: string, name: string): JSX.Element {
+  renderButton(activeView: string, name: string): React.ReactNode {
     const isActiveClass = this.state.activeView === activeView ? 'active' : '';
 
     return (
@@ -61,12 +65,13 @@ export default class App extends React.Component<{}, State> {
   // Listens for this.state.tweets changes and for each change renders the page
   // to reflect these changes. Here you can specify different page layouts
   // depending on the data format received from the server.
-  render(): JSX.Element {
+  render(): React.ReactNode {
     return (
       <div>
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          {this.renderButton(activeView.GET_THIRTY_TWEETS_COLORS, 'Get last 28 Tweets')}
-          {this.renderButton(activeView.GET_SEVEN_DAYS_COLORS, 'Get last 7 days Tweets')}
+          {this.renderButton(activeView.GET_THIRTY_TWEETS_COLORS, 'Get last 28 tweets')}
+          {this.renderButton(activeView.GET_SEVEN_DAYS_COLORS, 'Get last 7 days tweets')}
+          {this.renderButton(activeView.GET_ALL_COLORS, 'Get all tweets')}
         </div>
         {this.renderLayout()}
       </div>

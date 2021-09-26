@@ -6,9 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    server: './src/server/index.ts',
-    saveTweetsToFile: './scripts/save-tweets-to-file.ts',
-    saveTweetsToMongodb: './scripts/save-tweets-to-mongodb.ts'
+    server: './src/server/index.ts'
   },
   target: 'node',
   node: {
@@ -23,11 +21,11 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
       },
-      { 
+      {
         test: /\.less$/,
         use: [
-          MiniCssExtractPlugin.loader, 
-          'css-loader', 
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           'less-loader'
         ],
       }

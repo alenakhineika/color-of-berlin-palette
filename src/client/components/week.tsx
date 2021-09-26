@@ -8,15 +8,15 @@ interface Proprs {
 }
 
 export default class Week extends React.Component<Proprs, {}> {
-  render(): JSX.Element {
+  render(): React.ReactNode {
     const weekByDays: JSX.Element[] = [];
     const weekByHours: JSX.Element[] = [];
 
     for (let day = 0; day < 7; day++) {
       const dayGradient: string[] = [];
-      
+
       this.props.tweets[day].tweetsByDay.forEach((item, index) => {
-        dayGradient.push(this.props.tweets[day].tweetsByDay[index].colorHex);
+        dayGradient.push(`#${this.props.tweets[day].tweetsByDay[index].colorHex}`);
       });
 
       weekByDays.push(
