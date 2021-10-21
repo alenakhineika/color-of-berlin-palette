@@ -175,3 +175,42 @@ exports.getAllColors = async (
     }));
   }
 };
+
+exports.getCurrentScore = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response> => {
+  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
+  const database: Db | undefined = mongoClient.db(mongodbDatabase);
+  const collection: Collection | undefined = database.collection(mongodbCollection);
+  let tweets: Tweets = [];
+
+  if (!collection) {
+    return response.json({ tweets });
+  }
+
+  try {
+    tweets = await collection.aggregate([
+      {
+        $group: {
+          _id: '$colorHex',
+          tweetsByColor: { $push: { id: '$id' } },
+          value: { $sum: 1 }
+        }
+      },
+      { $addFields: { color: { $concat: [ '#', "$_id" ] } } },
+      { $sort: { value: -1 } },
+      { $limit: 25 },
+      { $project: { _id: 0, value: 1, color: 1 } }
+    ]).toArray();
+
+    response.json({ tweets });
+  } catch (error) {
+    next(new HttpException({
+      status: HTTPStatus.INTERNAL_SERVER_ERROR,
+      message: error.message
+    }));
+  }
+};

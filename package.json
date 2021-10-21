@@ -23,6 +23,7 @@
     "check"
   ],
   "dependencies": {
+    "@weknow/react-bubble-chart-d3": "^1.0.12",
     "body-parser": "^1.19.0",
     "bson": "^4.2.2",
     "compression": "^1.7.4",

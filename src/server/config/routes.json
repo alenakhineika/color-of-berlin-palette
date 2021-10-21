@@ -26,5 +26,12 @@
     "path": "/getAllColors",
     "handler": "generic/getAllColors",
     "component": "App"
+  },
+  {
+    "name": "getCurrentScore",
+    "method": "GET",
+    "path": "/getCurrentScore",
+    "handler": "generic/getCurrentScore",
+    "component": "App"
   }
 ]

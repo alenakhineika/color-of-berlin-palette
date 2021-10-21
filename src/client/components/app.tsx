@@ -5,6 +5,7 @@ import { Tweets } from '../../shared/types/types';
 import All from './all';
 import Last from './last';
 import Week from './week';
+import Bubble from './bubble';
 
 import '../app.less';
 
@@ -16,7 +17,8 @@ interface State {
 enum activeView {
   GET_THIRTY_TWEETS_COLORS = 'getThirtyTweetsColors',
   GET_SEVEN_DAYS_COLORS = 'getSevenDaysColors',
-  GET_ALL_COLORS = 'getAllColors'
+  GET_ALL_COLORS = 'getAllColors',
+  GET_CURRENT_SCORE = 'getCurrentScore'
 }
 
 export default class App extends React.Component<{}, State> {
@@ -41,6 +43,8 @@ export default class App extends React.Component<{}, State> {
         return <Week tweets={this.state.tweets} />;
       case activeView.GET_ALL_COLORS:
         return <All tweets={this.state.tweets} />;
+      case activeView.GET_CURRENT_SCORE:
+        return <Bubble tweets={this.state.tweets} />;
       default:
         return <div />;
     }
@@ -72,6 +76,7 @@ export default class App extends React.Component<{}, State> {
           {this.renderButton(activeView.GET_THIRTY_TWEETS_COLORS, 'Get last 28 tweets')}
           {this.renderButton(activeView.GET_SEVEN_DAYS_COLORS, 'Get last 7 days tweets')}
           {this.renderButton(activeView.GET_ALL_COLORS, 'Get all tweets')}
+          {this.renderButton(activeView.GET_CURRENT_SCORE, 'Get current score')}
         </div>
         {this.renderLayout()}
       </div>
