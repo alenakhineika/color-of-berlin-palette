@@ -1,32 +1,32 @@
 import { EJSON } from 'bson';
 
 export type ConfigRoute = {
-  name: string,
-  method: string,
-  path: string,
-  handler: string,
-  component: string,
-  byName?: { [route: string]: EJSON.SerializableTypes},
-  byPath?: { [route: string]: EJSON.SerializableTypes},
-  raw?: EJSON.SerializableTypes[]
+  name: string;
+  method: string;
+  path: string;
+  handler: string;
+  component: string;
+  byName?: { [route: string]: EJSON.SerializableTypes};
+  byPath?: { [route: string]: EJSON.SerializableTypes};
+  raw?: EJSON.SerializableTypes[];
 };
 
 export type RequestRoute = {
-  byName: { [route: string]: EJSON.SerializableTypes},
-  byPath: { [route: string]: EJSON.SerializableTypes},
-  raw: EJSON.SerializableTypes[]
+  byName: { [route: string]: EJSON.SerializableTypes};
+  byPath: { [route: string]: EJSON.SerializableTypes};
+  raw: EJSON.SerializableTypes[];
 };
 
 export type LastSavedTweet = {
-  id: string,
-  created_at: string
+  id: string;
+  created_at: string;
 };
 
 export type TwitterParams = {
   screen_name: string;
   count: number;
-  since_id?: string,
-  max_id?: string
+  since_id?: string;
+  max_id?: string;
 };
 
 export type GetTweets = (
@@ -35,16 +35,21 @@ export type GetTweets = (
 ) => Promise<any>;
 
 export type Tweet = {
-  id: number,
-  text: string,
-  created_at?: EJSON.SerializableTypes,
-  colorHex?: string,
-  colorName?: string
+  id: number;
+  text: string;
+  created_at?: EJSON.SerializableTypes;
+  colorHex?: string;
+  colorName?: string;
 };
 
 export type TweetsByDay = {
-  tweetsByDay: Tweet[],
-  day: EJSON.SerializableTypes
+  tweetsByDay: Tweet[];
+  day: EJSON.SerializableTypes;
 };
 
-export type Tweets = TweetsByDay[];
+export type TweetsLeaderboard = {
+  value: number;
+  color: string;
+};
+
+export type Tweets = Tweet[] | TweetsByDay[] | TweetsLeaderboard[];

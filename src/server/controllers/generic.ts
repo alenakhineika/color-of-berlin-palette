@@ -27,7 +27,7 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
   response.send(html({ body }));
 };
 
-exports.getThirtyTweetsColors = async (
+exports.getRecentTweets = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -48,15 +48,10 @@ exports.getThirtyTweetsColors = async (
   try {
     tweets = await collection.aggregate([
       { $match: { colorHex: { $ne: null } } },
-      {
-        $addFields: {
-          day: { $toDate: '$created_at' },
-          tweetsByDay: [{ id: '$id', created_at: '$day', colorHex: '$colorHex' }]
-        }
-      },
+      { $addFields: { day: { $toDate: '$created_at' } } },
       { $sort: { day: -1 } },
       { $limit: 28 },
-      { $project: { tweetsByDay: 1, day: 1, _id: 0 } }
+      { $project: { _id: 0, created_at: '$day', colorHex: '$colorHex' } }
     ]).toArray();
 
     response.json({ tweets });
@@ -68,7 +63,7 @@ exports.getThirtyTweetsColors = async (
   }
 };
 
-exports.getSevenDaysColors = async (
+exports.getRecentTweetsPerWeek = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -111,7 +106,7 @@ exports.getSevenDaysColors = async (
       },
       { $sort: { day: -1 } },
       { $limit: 7 },
-      { $project: { _id: 0, day: 1, tweetsByDay: 1 }}
+      { $project: { _id: 0, tweetsByDay: 1 }}
     ]).toArray();
 
     response.json({ tweets });
@@ -123,7 +118,7 @@ exports.getSevenDaysColors = async (
   }
 };
 
-exports.getAllColors = async (
+exports.getAllData = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -163,8 +158,47 @@ exports.getAllColors = async (
           }
         }
       },
-      { $sort: { day: -1 } },
+      { $sort: { day: 1 } },
       { $project: { _id: 0, day: 1, tweetsByDay: 1 }}
+    ]).toArray();
+
+    response.json({ tweets });
+  } catch (error) {
+    next(new HttpException({
+      status: HTTPStatus.INTERNAL_SERVER_ERROR,
+      message: error.message
+    }));
+  }
+};
+
+exports.getLeaderboard = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response> => {
+  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
+  const database: Db | undefined = mongoClient.db(mongodbDatabase);
+  const collection: Collection | undefined = database.collection(mongodbCollection);
+  let tweets: Tweets = [];
+
+  if (!collection) {
+    return response.json({ tweets });
+  }
+
+  try {
+    tweets = await collection.aggregate([
+      {
+        $group: {
+          _id: '$colorHex',
+          tweetsByColor: { $push: { id: '$id' } },
+          value: { $sum: 1 }
+        }
+      },
+      { $addFields: { color: { $concat: [ '#', '$_id' ] } } },
+      { $sort: { value: -1 } },
+      { $limit: 25 },
+      { $project: { _id: 0, value: 1, color: 1, label: '$color' } }
     ]).toArray();
 
     response.json({ tweets });

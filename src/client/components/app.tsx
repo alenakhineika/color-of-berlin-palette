@@ -1,22 +1,24 @@
 import * as React from 'react';
 
 import apiRoute from '../router';
-import { Tweets } from '../../shared/types/types';
-import All from './all';
-import Last from './last';
-import Week from './week';
+import { Tweets, Tweet, TweetsByDay, TweetsLeaderboard } from '../../shared/types/types';
+import AllData from './allData';
+import RecentTweets from './recentTweets';
+import RecentTweetsPerWeek from './recentTweetsPerWeek';
+import Leaderboard from './leaderboard';
 
 import '../app.less';
 
 interface State {
-  tweets: Tweets,
-  activeView?: string,
+  tweets: Tweets;
+  activeView?: string;
 }
 
 enum activeView {
-  GET_THIRTY_TWEETS_COLORS = 'getThirtyTweetsColors',
-  GET_SEVEN_DAYS_COLORS = 'getSevenDaysColors',
-  GET_ALL_COLORS = 'getAllColors'
+  RECENT_TWEETS = 'getRecentTweets',
+  RECENT_TWEETS_PER_WEEK = 'getRecentTweetsPerWeek',
+  ALL_DATA = 'getAllData',
+  LEADERBOARD = 'getLeaderboard'
 }
 
 export default class App extends React.Component<{}, State> {
@@ -35,12 +37,14 @@ export default class App extends React.Component<{}, State> {
 
   renderLayout(): React.ReactNode {
     switch(this.state.activeView) {
-      case activeView.GET_THIRTY_TWEETS_COLORS:
-        return <Last tweets={this.state.tweets} />;
-      case activeView.GET_SEVEN_DAYS_COLORS:
-        return <Week tweets={this.state.tweets} />;
-      case activeView.GET_ALL_COLORS:
-        return <All tweets={this.state.tweets} />;
+      case activeView.RECENT_TWEETS:
+        return <RecentTweets tweets={this.state.tweets as Tweet[]} />;
+      case activeView.RECENT_TWEETS_PER_WEEK:
+        return <RecentTweetsPerWeek tweets={this.state.tweets as TweetsByDay[]} />;
+      case activeView.ALL_DATA:
+        return <AllData tweets={this.state.tweets as TweetsByDay[]} />;
+      case activeView.LEADERBOARD:
+        return <Leaderboard tweets={this.state.tweets as TweetsLeaderboard[]} />;
       default:
         return <div />;
     }
@@ -69,9 +73,10 @@ export default class App extends React.Component<{}, State> {
     return (
       <div>
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          {this.renderButton(activeView.GET_THIRTY_TWEETS_COLORS, 'Get last 28 tweets')}
-          {this.renderButton(activeView.GET_SEVEN_DAYS_COLORS, 'Get last 7 days tweets')}
-          {this.renderButton(activeView.GET_ALL_COLORS, 'Get all tweets')}
+          {this.renderButton(activeView.RECENT_TWEETS , 'Recent Tweets')}
+          {this.renderButton(activeView.RECENT_TWEETS_PER_WEEK, 'Recent Tweets Per Week')}
+          {this.renderButton(activeView.ALL_DATA, 'All Data')}
+          {this.renderButton(activeView.LEADERBOARD, 'Leaderboard')}
         </div>
         {this.renderLayout()}
       </div>

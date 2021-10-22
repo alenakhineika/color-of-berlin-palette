@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { hexAverage, lightenDarkenColor } from '../utils';
-import { Tweets } from '../../shared/types/types';
+import { TweetsByDay } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: Tweets
+  tweets: TweetsByDay[];
 }
 
-export default class Week extends React.Component<Proprs, {}> {
+export default class RecentTweetsPerWeek extends React.Component<Proprs, {}> {
   render(): React.ReactNode {
     const weekByDays: JSX.Element[] = [];
-    const weekByHours: JSX.Element[] = [];
+    const weekDominantColors: JSX.Element[] = [];
 
     for (let day = 0; day < 7; day++) {
       const dayGradient: string[] = [];
@@ -31,7 +31,7 @@ export default class Week extends React.Component<Proprs, {}> {
       const averageDayGradient = hexAverage(dayGradient);
       const darkerDayGradient = lightenDarkenColor(averageDayGradient, 80);
 
-      weekByHours.push(
+      weekDominantColors.push(
         <div
           key={`hourOfDay${day}`}
           className="hourOfDay"
@@ -44,7 +44,7 @@ export default class Week extends React.Component<Proprs, {}> {
     return (
       <div className="week">
         <div className="weekByDays">{weekByDays}</div>
-        <div className="weekByHours">{weekByHours}</div>
+        <div className="weekDominantColors">{weekDominantColors}</div>
       </div>
     );
   }
