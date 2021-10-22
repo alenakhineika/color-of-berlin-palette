@@ -1,13 +1,13 @@
 import * as React from 'react';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
-import { Tweets } from '../../shared/types/types';
+import { TweetsLeaderboard } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: Tweets
+  tweets: TweetsLeaderboard[];
 }
 
-export default class Week extends React.Component<Proprs, {}> {
+export default class Leaderboard extends React.Component<Proprs, {}> {
   render(): React.ReactNode {
     return (
     <div className="bubble">
@@ -18,7 +18,18 @@ export default class Week extends React.Component<Proprs, {}> {
             offsetX: 0,
             offsetY: 0,
           }}
-          showLegend={false}
+          legendFont={{
+            family: 'Arial',
+            size: 11,
+            color: '#6c757d'
+          }}
+          labelFont={{
+            size: 0
+          }}
+          valueFont={{
+            size: 0
+          }}
+          showLegend={true}
           width={600}
           height={600}
           padding={15}

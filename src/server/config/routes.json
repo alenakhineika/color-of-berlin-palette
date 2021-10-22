@@ -7,31 +7,31 @@
     "component": "App"
   },
   {
-    "name": "getThirtyTweetsColors",
+    "name": "getRecentTweets",
     "method": "GET",
-    "path": "/getThirtyTweetsColors",
-    "handler": "generic/getThirtyTweetsColors",
+    "path": "/getRecentTweets",
+    "handler": "generic/getRecentTweets",
     "component": "App"
   },
   {
-    "name": "getSevenDaysColors",
+    "name": "getRecentTweetsPerWeek",
     "method": "GET",
-    "path": "/getSevenDaysColors",
-    "handler": "generic/getSevenDaysColors",
+    "path": "/getRecentTweetsPerWeek",
+    "handler": "generic/getRecentTweetsPerWeek",
     "component": "App"
   },
   {
-    "name": "getAllColors",
+    "name": "getAllData",
     "method": "GET",
-    "path": "/getAllColors",
-    "handler": "generic/getAllColors",
+    "path": "/getAllData",
+    "handler": "generic/getAllData",
     "component": "App"
   },
   {
-    "name": "getCurrentScore",
+    "name": "getLeaderboard",
     "method": "GET",
-    "path": "/getCurrentScore",
-    "handler": "generic/getCurrentScore",
+    "path": "/getLeaderboard",
+    "handler": "generic/getLeaderboard",
     "component": "App"
   }
 ]
