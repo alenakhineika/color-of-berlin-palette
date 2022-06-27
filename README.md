@@ -28,7 +28,8 @@ Build and start the project at `http://localhost:3000/`:
 
 - Webpack 4
 - React 16
-- Server-side rendering
+- Server-side Rendering
+- Server-side Routing
 - Express
 - TypeScript
 - Less
