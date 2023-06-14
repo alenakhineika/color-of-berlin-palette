@@ -2,6 +2,7 @@
   "hostname": "localhost",
   "port": 3000,
   "mongodbUri": "mongodb://localhost",
-  "mongodbDatabase": "colorofberlin",
-  "mongodbCollection": "tweets"
+  "mongodbDatabase": "coloroflocation",
+  "mongodbCollection": "colors",
+  "cameraLocation": "Berlin"
 }

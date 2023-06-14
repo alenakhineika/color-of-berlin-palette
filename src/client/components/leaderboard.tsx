@@ -1,10 +1,10 @@
 import * as React from 'react';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
-import { TweetsLeaderboard } from '../../shared/types/types';
+import { RecordsLeaderboard } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: TweetsLeaderboard[];
+  records: RecordsLeaderboard[];
 }
 
 export default class Leaderboard extends React.Component<Proprs, {}> {
@@ -33,7 +33,7 @@ export default class Leaderboard extends React.Component<Proprs, {}> {
           width={600}
           height={600}
           padding={15}
-          data={this.props.tweets}
+          data={this.props.records}
         />
       </div>
     </div>
