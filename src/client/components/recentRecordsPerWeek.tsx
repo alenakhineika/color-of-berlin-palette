@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { hexAverage, lightenDarkenColor } from '../utils';
-import { TweetsByDay } from '../../shared/types/types';
+import { RecordsByDay } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: TweetsByDay[];
+  records: RecordsByDay[];
 }
 
-export default class RecentTweetsPerWeek extends React.Component<Proprs, {}> {
+export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
   render(): React.ReactNode {
     const weekByDays: JSX.Element[] = [];
     const weekDominantColors: JSX.Element[] = [];
@@ -15,8 +15,8 @@ export default class RecentTweetsPerWeek extends React.Component<Proprs, {}> {
     for (let day = 0; day < 7; day++) {
       const dayGradient: string[] = [];
 
-      this.props.tweets[day].tweetsByDay.forEach((item, index) => {
-        dayGradient.push(`#${this.props.tweets[day].tweetsByDay[index].colorHex}`);
+      this.props.records[day].recordsByDay.forEach((item, index) => {
+        dayGradient.push(`#${this.props.records[day].recordsByDay[index].colorHex}`);
       });
 
       weekByDays.push(

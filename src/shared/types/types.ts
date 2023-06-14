@@ -17,7 +17,7 @@ export type RequestRoute = {
   raw: EJSON.SerializableTypes[];
 };
 
-export type LastSavedTweet = {
+export type LastSavedRecord = {
   id: string;
   created_at: string;
 };
@@ -29,12 +29,12 @@ export type TwitterParams = {
   max_id?: string;
 };
 
-export type GetTweets = (
+export type GetRecords = (
   arg1: string,
   arg2: TwitterParams
 ) => Promise<any>;
 
-export type Tweet = {
+export type Record = {
   id: number;
   text: string;
   created_at?: EJSON.SerializableTypes;
@@ -42,14 +42,14 @@ export type Tweet = {
   colorName?: string;
 };
 
-export type TweetsByDay = {
-  tweetsByDay: Tweet[];
+export type RecordsByDay = {
+  recordsByDay: Record[];
   day: EJSON.SerializableTypes;
 };
 
-export type TweetsLeaderboard = {
+export type RecordsLeaderboard = {
   value: number;
   color: string;
 };
 
-export type Tweets = Tweet[] | TweetsByDay[] | TweetsLeaderboard[];
+export type Records = Record[] | RecordsByDay[] | RecordsLeaderboard[];

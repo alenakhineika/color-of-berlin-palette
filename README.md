@@ -13,7 +13,7 @@ Clone the project and install dependencies:
 > npm i
 ```
 
-You need [MongoDB](https://docs.mongodb.com/manual/installation/) installed and `data/tweets-200.json` to run the project. Connect to `mongodb://localhost`, create the `colorofberlin` database with the `tweets` collection, and import the sample JSON to MongoDB.
+You need [MongoDB](https://docs.mongodb.com/manual/installation/) installed and `data/berlin-colors-sample.json` to run the project. Connect to `mongodb://localhost`, create the `coloroflocation` database with the `colors` collection, and import the sample JSON to MongoDB.
 
 ## Run the project
 

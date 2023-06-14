@@ -1,29 +1,29 @@
 import * as React from 'react';
 
-import { Tweet } from '../../shared/types/types';
+import { Record } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: Tweet[];
+  records: Record[];
 }
 
-export default class RecentTweets extends React.Component<Proprs, {}> {
+export default class RecentRecords extends React.Component<Proprs, {}> {
   getLine(offset: number): JSX.Element {
     const blocks: JSX.Element[] = [];
 
     // All days have the same css, therefore we use a loop
-    // to create only one div and use it for all tweets.
+    // to create only one div and use it for all records.
     // Note that when you use loops React requires unique keys for components to distinguish them.
     for (let item = 0; item < 7; item++) {
-      const currentColor = `#${this.props.tweets[offset + item].colorHex}`;
-      const nextColor = this.props.tweets[offset + item + 1]
-        ? `#${this.props.tweets[offset + item + 1].colorHex}` // Next tweet color.
-        : `#${this.props.tweets[0].colorHex}`; // Prev tweet color.
+      const currentColor = `#${this.props.records[offset + item].colorHex}`;
+      const nextColor = this.props.records[offset + item + 1]
+        ? `#${this.props.records[offset + item + 1].colorHex}` // Next record color.
+        : `#${this.props.records[0].colorHex}`; // Prev record color.
 
       blocks.push(
         <div
-          title={`${this.props.tweets[offset + item].created_at}`}
-          key={`tweet${offset + item + 1}`}
-          className="tweet"
+          title={`${this.props.records[offset + item].created_at}`}
+          key={`record${offset + item + 1}`}
+          className="record"
           style={{
             background: `radial-gradient(circle at 100px 100px, ${currentColor}, ${nextColor})`
           }} />

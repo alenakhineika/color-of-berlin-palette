@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-import { TweetsByDay } from '../../shared/types/types';
+import { RecordsByDay } from '../../shared/types/types';
 
 interface Proprs {
-  tweets: TweetsByDay[];
+  records: RecordsByDay[];
 }
 
 export default class AllData extends React.Component<Proprs, {}> {
-  rendertweetsPerYear(): React.ReactNode {
-    return this.props.tweets.map((item, index) => {
+  renderRecordsPerYear(): React.ReactNode {
+    return this.props.records.map((item, index) => {
       const dayGradient: string[] = [];
 
-      item.tweetsByDay.forEach((item) => {
+      item.recordsByDay.forEach((item) => {
         dayGradient.push(`#${item.colorHex}`);
       });
 
@@ -26,6 +26,6 @@ export default class AllData extends React.Component<Proprs, {}> {
   }
 
   render(): React.ReactNode {
-    return (<div className="year">{this.rendertweetsPerYear()}</div>);
+    return (<div className="year">{this.renderRecordsPerYear()}</div>);
   }
 }

@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import App from '../../client/components/app';
 import { HttpException } from '../httpException';
-import { Tweets } from '../../shared/types/types';
+import { Records } from '../../shared/types/types';
 
 exports.index = async (request: Request, response: Response): Promise<void> => {
   const html = ({ body }: { body: string }) => `
@@ -27,34 +27,35 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
   response.send(html({ body }));
 };
 
-exports.getRecentTweets = async (
+exports.getRecentRecords = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
    // Access the `colorofberlin` database.
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
-  // Access the `tweets` collection.
+  // Access the `records` collection.
   const collection: Collection | undefined = database.collection(mongodbCollection);
   // The data format expected by the client.
-  let tweets: Tweets = [];
+  let records: Records = [];
 
   if (!collection) {
-    return response.json({ tweets });
+    return response.json({ records });
   }
 
   try {
-    tweets = await collection.aggregate([
+    records = await collection.aggregate([
       { $match: { colorHex: { $ne: null } } },
+      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
       { $addFields: { day: { $toDate: '$created_at' } } },
       { $sort: { day: -1 } },
       { $limit: 28 },
       { $project: { _id: 0, created_at: '$day', colorHex: '$colorHex' } }
     ]).toArray();
 
-    response.json({ tweets });
+    response.json({ records });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,
@@ -63,25 +64,26 @@ exports.getRecentTweets = async (
   }
 };
 
-exports.getRecentTweetsPerWeek = async (
+exports.getRecentRecordsPerWeek = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let tweets: Tweets = [];
+  let records: Records = [];
 
   if (!collection) {
-    return response.json({ tweets });
+    return response.json({ records });
   }
 
   try {
-    tweets = await collection.aggregate([
+    records = await collection.aggregate([
       { $addFields: { day: { $toDate: '$created_at' } } },
       { $match: { colorHex: { $ne: null } } },
+      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
       { $sort: { day: -1 } },
       {
         $group: {
@@ -90,7 +92,7 @@ exports.getRecentTweetsPerWeek = async (
             month: { $month: '$day' },
             year: { $year: '$day' }
           },
-          tweetsByDay: { $push: { id: '$id', created_at: '$day', colorHex: '$colorHex' } }
+          recordsByDay: { $push: { id: '$id', created_at: '$day', colorHex: '$colorHex' } }
         }
       },
       {
@@ -106,10 +108,10 @@ exports.getRecentTweetsPerWeek = async (
       },
       { $sort: { day: -1 } },
       { $limit: 7 },
-      { $project: { _id: 0, tweetsByDay: 1 }}
+      { $project: { _id: 0, recordsByDay: 1 }}
     ]).toArray();
 
-    response.json({ tweets });
+    response.json({ records });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,
@@ -118,24 +120,32 @@ exports.getRecentTweetsPerWeek = async (
   }
 };
 
+/* Switched to 365 days */
 exports.getAllData = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let tweets: Tweets = [];
+  let records: Records = [];
 
   if (!collection) {
-    return response.json({ tweets });
+    return response.json({ records });
   }
 
   try {
-    tweets = await collection.aggregate([
+    records = await collection.aggregate([
+      { $match: {$or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
       { $addFields: { day: { $toDate: '$created_at' } } },
+      { $match: { $expr: {
+        $gt: [
+          '$created_at',
+          { $dateSubtract: { startDate: '$$NOW', unit: 'day', amount: 365 } }
+        ]
+      } } },
       { $sort: { day: -1 } },
       {
         $group: {
@@ -144,7 +154,7 @@ exports.getAllData = async (
             month: { $month: '$day' },
             year: { $year: '$day' }
           },
-          tweetsByDay: { $push: { id: '$id', created_at: '$day', colorHex: '$colorHex' } }
+          recordsByDay: { $push: { id: '$id', created_at: '$day', colorHex: { $trim: { input: "$colorHex", chars: '#' } } } }
         }
       },
       {
@@ -159,10 +169,10 @@ exports.getAllData = async (
         }
       },
       { $sort: { day: 1 } },
-      { $project: { _id: 0, day: 1, tweetsByDay: 1 }}
+      { $project: { _id: 0, day: 1, recordsByDay: 1 }}
     ]).toArray();
 
-    response.json({ tweets });
+    response.json({ records });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,
@@ -176,22 +186,23 @@ exports.getLeaderboard = async (
   response: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let tweets: Tweets = [];
+  let records: Records = [];
 
   if (!collection) {
-    return response.json({ tweets });
+    return response.json({ records });
   }
 
   try {
-    tweets = await collection.aggregate([
+    records = await collection.aggregate([
+      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
       {
         $group: {
           _id: '$colorHex',
-          tweetsByColor: { $push: { id: '$id' } },
+          recordsByColor: { $push: { id: '$id' } },
           value: { $sum: 1 }
         }
       },
@@ -201,7 +212,7 @@ exports.getLeaderboard = async (
       { $project: { _id: 0, value: 1, color: 1, label: '$color' } }
     ]).toArray();
 
-    response.json({ tweets });
+    response.json({ records });
   } catch (error) {
     next(new HttpException({
       status: HTTPStatus.INTERNAL_SERVER_ERROR,
