@@ -1,8 +1,0 @@
-{
-  "hostname": "localhost",
-  "port": 3000,
-  "mongodbUri": "mongodb://localhost",
-  "mongodbDatabase": "coloroflocation",
-  "mongodbCollection": "colors",
-  "cameraLocation": "Berlin"
-}

@@ -1,5 +1,3 @@
-import serverSettings from '../server/config';
-
 interface IApi {
   host: string;
   getRoute: (routeName: string) => string;
@@ -17,7 +15,10 @@ class Api implements IApi {
   }
 }
 
-const { hostname, port } = serverSettings.server;
-const apiRoute: Api = new Api(`http://${hostname}:${port}`);
+const HOSTNAME = process.env.HOSTNAME || 'localhost';
+const PORT = process.env.PORT || '3000';
+const URI = `http://${HOSTNAME}:${PORT}`;
+
+const apiRoute: Api = new Api(URI);
 
 export default apiRoute;
