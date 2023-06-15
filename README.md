@@ -26,12 +26,12 @@ Build and start the project at `http://localhost:3000/`:
 
 ## Features
 
-- Webpack 4
-- React 16
+- Webpack 5
+- React 18
+- TypeScript 5
 - Server-side Rendering
 - Server-side Routing
 - Express
-- TypeScript
 - Less
 - Bootstrap
 - Eslint

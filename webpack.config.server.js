@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     server: './src/server/index.ts'
   },
+  mode: 'none',
   target: 'node',
   node: {
     __dirname: false,

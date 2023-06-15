@@ -9,5 +9,5 @@ export default {
   loadControllers,
   loadMongodbClient,
   loadRoutes,
-  loadSettings
+  loadSettings,
 };

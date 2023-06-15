@@ -7,5 +7,5 @@ export enum HTTPMethod {
   PATCH = 'patch',
   POST = 'post',
   PUT = 'put',
-  TRACE = 'trace'
+  TRACE = 'trace',
 }

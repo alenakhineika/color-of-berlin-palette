@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import { hexAverage, lightenDarkenColor } from '../utils';
-import { RecordsByDay } from '../../shared/types/types';
+import type { Document } from 'mongodb';
 
 interface Proprs {
-  records: RecordsByDay[];
+  records: Document[];
 }
 
 export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
