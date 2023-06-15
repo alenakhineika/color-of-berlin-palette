@@ -1,11 +1,11 @@
 import * as React from 'react';
 import type { Document } from 'mongodb';
 
-interface Proprs {
+interface Props {
   records: Document[];
 }
 
-export default class RecentRecords extends React.Component<Proprs, {}> {
+export default class RecentRecords extends React.Component<Props, {}> {
   getLine(offset: number): JSX.Element {
     const blocks: JSX.Element[] = [];
 
@@ -24,12 +24,17 @@ export default class RecentRecords extends React.Component<Proprs, {}> {
           key={`record${offset + item + 1}`}
           className="record"
           style={{
-            background: `radial-gradient(circle at 100px 100px, ${currentColor}, ${nextColor})`
-          }} />
+            background: `radial-gradient(circle at 100px 100px, ${currentColor}, ${nextColor})`,
+          }}
+        />,
       );
     }
 
-    return (<div key={`line${offset/7+1}`} className="line">{blocks}</div>);
+    return (
+      <div key={`line${offset / 7 + 1}`} className="line">
+        {blocks}
+      </div>
+    );
   }
 
   render(): React.ReactNode {
@@ -42,6 +47,6 @@ export default class RecentRecords extends React.Component<Proprs, {}> {
       offset += 7;
     }
 
-    return (<div className="last">{rows}</div>);
+    return <div className="last">{rows}</div>;
   }
 }

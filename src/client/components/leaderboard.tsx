@@ -1,9 +1,8 @@
 import * as React from 'react';
-import BubbleChart from '@weknow/react-bubble-chart-d3';
-import type { Document } from 'mongodb';
+import BubbleChart from './bubbleChart';
 
 interface Proprs {
-  records: Document[];
+  records: any[];
 }
 
 export default class Leaderboard extends React.Component<Proprs, {}> {
@@ -20,13 +19,13 @@ export default class Leaderboard extends React.Component<Proprs, {}> {
             legendFont={{
               family: 'Arial',
               size: 11,
-              color: '#6c757d'
+              color: '#6c757d',
             }}
             labelFont={{
-              size: 0
+              size: 0,
             }}
             valueFont={{
-              size: 0
+              size: 0,
             }}
             showLegend={true}
             width={600}

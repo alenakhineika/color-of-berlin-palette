@@ -3,11 +3,11 @@ import * as React from 'react';
 import { hexAverage, lightenDarkenColor } from '../utils';
 import type { Document } from 'mongodb';
 
-interface Proprs {
+interface Props {
   records: Document[];
 }
 
-export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
+export default class RecentRecordsPerWeek extends React.Component<Props, {}> {
   render(): React.ReactNode {
     const weekByDays: JSX.Element[] = [];
     const weekDominantColors: JSX.Element[] = [];
@@ -16,7 +16,9 @@ export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
       const dayGradient: string[] = [];
 
       this.props.records[day].recordsByDay.forEach((item, index) => {
-        dayGradient.push(`#${this.props.records[day].recordsByDay[index].colorHex}`);
+        dayGradient.push(
+          `#${this.props.records[day].recordsByDay[index].colorHex}`,
+        );
       });
 
       weekByDays.push(
@@ -24,8 +26,9 @@ export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
           key={`dayOfWeek${day}`}
           className="dayOfWeek"
           style={{
-            backgroundImage: `linear-gradient(${dayGradient.join(', ')})`
-          }} />
+            backgroundImage: `linear-gradient(${dayGradient.join(', ')})`,
+          }}
+        />,
       );
 
       const averageDayGradient = hexAverage(dayGradient);
@@ -36,8 +39,9 @@ export default class RecentRecordsPerWeek extends React.Component<Proprs, {}> {
           key={`hourOfDay${day}`}
           className="hourOfDay"
           style={{
-            background: `radial-gradient(circle at 100px 100px, ${averageDayGradient}, ${darkerDayGradient})`
-          }} />
+            background: `radial-gradient(circle at 100px 100px, ${averageDayGradient}, ${darkerDayGradient})`,
+          }}
+        />,
       );
     }
 

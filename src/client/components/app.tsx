@@ -18,7 +18,7 @@ enum activeView {
   RECENT_RECORDS = 'getRecentRecords',
   RECENT_RECORDS_PER_WEEK = 'getRecentRecordsPerWeek',
   ALL_DATA = 'getAllData',
-  LEADERBOARD = 'getLeaderboard'
+  LEADERBOARD = 'getLeaderboard',
 }
 
 export default class App extends React.Component<{}, State> {
@@ -28,23 +28,27 @@ export default class App extends React.Component<{}, State> {
     event.preventDefault();
 
     fetch(apiRoute.getRoute(view))
-      .then(res => res.json())
-      .then(res => this.setState({
-        records: res.records,
-        activeView: view,
-      }));
+      .then((res) => res.json())
+      .then((res) =>
+        this.setState({
+          records: res.records,
+          activeView: view,
+        }),
+      );
   };
 
   renderLayout(): React.ReactNode {
-    switch(this.state.activeView) {
+    switch (this.state.activeView) {
       case activeView.RECENT_RECORDS:
         return <RecentRecords records={this.state.records as Document[]} />;
       case activeView.RECENT_RECORDS_PER_WEEK:
-        return <RecentRecordsPerWeek records={this.state.records as Document[]} />;
+        return (
+          <RecentRecordsPerWeek records={this.state.records as Document[]} />
+        );
       case activeView.ALL_DATA:
         return <AllData records={this.state.records as Document[]} />;
       case activeView.LEADERBOARD:
-        return <Leaderboard records={this.state.records as Document[]} />;
+        return <Leaderboard records={this.state.records} />;
       default:
         return <div />;
     }
@@ -66,7 +70,9 @@ export default class App extends React.Component<{}, State> {
           id={`button${activeView}`}
           autoComplete="off"
           onChange={this.handleChange.bind(this, view)}
-          checked={this.state.activeView === view ? true : false} /> {name}
+          checked={this.state.activeView === view ? true : false}
+        />{' '}
+        {name}
       </label>
     );
   }
@@ -78,13 +84,13 @@ export default class App extends React.Component<{}, State> {
     return (
       <div>
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          {this.renderButton(activeView.RECENT_RECORDS , 'Recent Records')}
-          {this.renderButton(activeView.RECENT_RECORDS_PER_WEEK, 'Recent Records Per Week')}
+          {this.renderButton(activeView.RECENT_RECORDS, 'Recent Records')}
+          {this.renderButton(
+            activeView.RECENT_RECORDS_PER_WEEK,
+            'Recent Records Per Week',
+          )}
           {this.renderButton(activeView.ALL_DATA, 'Last 365 Days')}
-          {
-            /* TODO: add a new bubble chart that works with React 18 */
-            /* this.renderButton(activeView.LEADERBOARD, 'Leaderboard') */
-          }
+          {this.renderButton(activeView.LEADERBOARD, 'Leaderboard')}
         </div>
         {this.renderLayout()}
       </div>
