@@ -35,7 +35,8 @@ app.use(middleware.customError);
 
 // Start the server.
 const serverPort = Number(process.env.PORT) || app.get('config').server.port;
-const serverHostname = Number(process.env.HOSTNAME) || app.get('config').server.hostname;
+const serverHostname =
+  Number(process.env.HOSTNAME) || app.get('config').server.hostname;
 const url = `http://${serverHostname}:${serverPort}`;
 
 app.listen(serverPort, () => {

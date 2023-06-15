@@ -2,7 +2,7 @@ import HTTPStatus from 'http-status';
 import { MongoClient, Db, Collection } from 'mongodb';
 import type { Document } from 'mongodb';
 import React from 'react';
-import { renderToString  } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { Request, Response, NextFunction } from 'express';
 
 import App from '../../client/components/app';
@@ -30,14 +30,16 @@ exports.index = async (request: Request, response: Response): Promise<void> => {
 exports.getRecentRecords = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } =
+    request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
-   // Access the `colorofberlin` database.
+  // Access the `colorofberlin` database.
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   // Access the `records` collection.
-  const collection: Collection | undefined = database.collection(mongodbCollection);
+  const collection: Collection | undefined =
+    database.collection(mongodbCollection);
   // The data format expected by the client.
   let records: Document[] = [];
 
@@ -46,33 +48,46 @@ exports.getRecentRecords = async (
   }
 
   try {
-    records = await collection.aggregate([
-      { $match: { colorHex: { $ne: null } } },
-      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
-      { $addFields: { day: { $toDate: '$created_at' } } },
-      { $sort: { day: -1 } },
-      { $limit: 28 },
-      { $project: { _id: 0, created_at: '$day', colorHex: '$colorHex' } }
-    ]).toArray();
+    records = await collection
+      .aggregate([
+        { $match: { colorHex: { $ne: null } } },
+        {
+          $match: {
+            $or: [
+              { location: { $exists: false } },
+              { location: cameraLocation },
+            ],
+          },
+        },
+        { $addFields: { day: { $toDate: '$created_at' } } },
+        { $sort: { day: -1 } },
+        { $limit: 28 },
+        { $project: { _id: 0, created_at: '$day', colorHex: '$colorHex' } },
+      ])
+      .toArray();
 
     response.json({ records });
   } catch (error) {
-    next(new HttpException({
-      status: HTTPStatus.INTERNAL_SERVER_ERROR,
-      message: error.message
-    }));
+    next(
+      new HttpException({
+        status: HTTPStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      }),
+    );
   }
 };
 
 exports.getRecentRecordsPerWeek = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } =
+    request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
-  const collection: Collection | undefined = database.collection(mongodbCollection);
+  const collection: Collection | undefined =
+    database.collection(mongodbCollection);
   let records: Document[] = [];
 
   if (!collection) {
@@ -80,43 +95,56 @@ exports.getRecentRecordsPerWeek = async (
   }
 
   try {
-    records = await collection.aggregate([
-      { $addFields: { day: { $toDate: '$created_at' } } },
-      { $match: { colorHex: { $ne: null } } },
-      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
-      { $sort: { day: -1 } },
-      {
-        $group: {
-          _id: {
-            day: { $dayOfMonth: '$day' },
-            month: { $month: '$day' },
-            year: { $year: '$day' }
+    records = await collection
+      .aggregate([
+        { $addFields: { day: { $toDate: '$created_at' } } },
+        { $match: { colorHex: { $ne: null } } },
+        {
+          $match: {
+            $or: [
+              { location: { $exists: false } },
+              { location: cameraLocation },
+            ],
           },
-          recordsByDay: { $push: { id: '$id', created_at: '$day', colorHex: '$colorHex' } }
-        }
-      },
-      {
-        $addFields: {
-          day: {
-            $dateFromParts: {
-              year: '$_id.year',
-              month: '$_id.month',
-              day: '$_id.day'
-            }
-          }
-        }
-      },
-      { $sort: { day: -1 } },
-      { $limit: 7 },
-      { $project: { _id: 0, recordsByDay: 1 }}
-    ]).toArray();
+        },
+        { $sort: { day: -1 } },
+        {
+          $group: {
+            _id: {
+              day: { $dayOfMonth: '$day' },
+              month: { $month: '$day' },
+              year: { $year: '$day' },
+            },
+            recordsByDay: {
+              $push: { id: '$id', created_at: '$day', colorHex: '$colorHex' },
+            },
+          },
+        },
+        {
+          $addFields: {
+            day: {
+              $dateFromParts: {
+                year: '$_id.year',
+                month: '$_id.month',
+                day: '$_id.day',
+              },
+            },
+          },
+        },
+        { $sort: { day: -1 } },
+        { $limit: 7 },
+        { $project: { _id: 0, recordsByDay: 1 } },
+      ])
+      .toArray();
 
     response.json({ records });
   } catch (error) {
-    next(new HttpException({
-      status: HTTPStatus.INTERNAL_SERVER_ERROR,
-      message: error.message
-    }));
+    next(
+      new HttpException({
+        status: HTTPStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      }),
+    );
   }
 };
 
@@ -124,12 +152,14 @@ exports.getRecentRecordsPerWeek = async (
 exports.getAllData = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } =
+    request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
-  const collection: Collection | undefined = database.collection(mongodbCollection);
+  const collection: Collection | undefined =
+    database.collection(mongodbCollection);
   let records: Document[] = [];
 
   if (!collection) {
@@ -137,59 +167,88 @@ exports.getAllData = async (
   }
 
   try {
-    records = await collection.aggregate([
-      { $match: {$or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
-      { $addFields: { day: { $toDate: '$created_at' } } },
-      { $match: { $expr: {
-        $gt: [
-          '$created_at',
-          { $dateSubtract: { startDate: '$$NOW', unit: 'day', amount: 365 } }
-        ]
-      } } },
-      { $sort: { day: -1 } },
-      {
-        $group: {
-          _id: {
-            day: { $dayOfMonth: '$day' },
-            month: { $month: '$day' },
-            year: { $year: '$day' }
+    records = await collection
+      .aggregate([
+        {
+          $match: {
+            $or: [
+              { location: { $exists: false } },
+              { location: cameraLocation },
+            ],
           },
-          recordsByDay: { $push: { id: '$id', created_at: '$day', colorHex: { $trim: { input: "$colorHex", chars: '#' } } } }
-        }
-      },
-      {
-        $addFields: {
-          day: {
-            $dateFromParts: {
-              year: '$_id.year',
-              month: '$_id.month',
-              day: '$_id.day'
-            }
-          }
-        }
-      },
-      { $sort: { day: 1 } },
-      { $project: { _id: 0, day: 1, recordsByDay: 1 }}
-    ]).toArray();
+        },
+        { $addFields: { day: { $toDate: '$created_at' } } },
+        {
+          $match: {
+            $expr: {
+              $gt: [
+                '$created_at',
+                {
+                  $dateSubtract: {
+                    startDate: '$$NOW',
+                    unit: 'day',
+                    amount: 365,
+                  },
+                },
+              ],
+            },
+          },
+        },
+        { $sort: { day: -1 } },
+        {
+          $group: {
+            _id: {
+              day: { $dayOfMonth: '$day' },
+              month: { $month: '$day' },
+              year: { $year: '$day' },
+            },
+            recordsByDay: {
+              $push: {
+                id: '$id',
+                created_at: '$day',
+                colorHex: { $trim: { input: '$colorHex', chars: '#' } },
+              },
+            },
+          },
+        },
+        {
+          $addFields: {
+            day: {
+              $dateFromParts: {
+                year: '$_id.year',
+                month: '$_id.month',
+                day: '$_id.day',
+              },
+            },
+          },
+        },
+        { $sort: { day: 1 } },
+        { $project: { _id: 0, day: 1, recordsByDay: 1 } },
+      ])
+      .toArray();
 
     response.json({ records });
   } catch (error) {
-    next(new HttpException({
-      status: HTTPStatus.INTERNAL_SERVER_ERROR,
-      message: error.message
-    }));
+    next(
+      new HttpException({
+        status: HTTPStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      }),
+    );
   }
 };
 
 exports.getLeaderboard = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<Response> => {
-  const { mongodbDatabase, mongodbCollection, cameraLocation } = request.app.get('config').server;
+  const { mongodbDatabase, mongodbCollection, cameraLocation } =
+    request.app.get('config').server;
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
-  const collection: Collection | undefined = database.collection(mongodbCollection);
+  const collection: Collection | undefined =
+    database.collection(mongodbCollection);
   let records: Document[] = [];
 
   if (!collection) {
@@ -197,26 +256,39 @@ exports.getLeaderboard = async (
   }
 
   try {
-    records = await collection.aggregate([
-      { $match: { $or: [{ location: { $exists: false } }, { location: cameraLocation }] } },
-      {
-        $group: {
-          _id: '$colorHex',
-          recordsByColor: { $push: { id: { $trim: { input: "$id", chars: '#' } } } },
-          value: { $sum: 1 }
-        }
-      },
-      { $addFields: { color: { $concat: [ '#', '$_id' ] } } },
-      { $sort: { value: -1 } },
-      { $limit: 25 },
-      { $project: { _id: 0, value: 1, color: 1, label: '$color' } }
-    ]).toArray();
+    records = await collection
+      .aggregate([
+        {
+          $match: {
+            $or: [
+              { location: { $exists: false } },
+              { location: cameraLocation },
+            ],
+          },
+        },
+        {
+          $group: {
+            _id: '$colorHex',
+            recordsByColor: {
+              $push: { id: { $trim: { input: '$id', chars: '#' } } },
+            },
+            value: { $sum: 1 },
+          },
+        },
+        { $addFields: { color: { $concat: ['#', '$_id'] } } },
+        { $sort: { value: -1 } },
+        { $limit: 25 },
+        { $project: { _id: 0, value: 1, color: 1, label: '$color' } },
+      ])
+      .toArray();
 
     response.json({ records });
   } catch (error) {
-    next(new HttpException({
-      status: HTTPStatus.INTERNAL_SERVER_ERROR,
-      message: error.message
-    }));
+    next(
+      new HttpException({
+        status: HTTPStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      }),
+    );
   }
 };

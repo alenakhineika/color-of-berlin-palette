@@ -6,7 +6,7 @@ export const lightenDarkenColor = (col: string, amt: number): string => {
     usePound = true;
   }
 
-  const num = parseInt(col,16);
+  const num = parseInt(col, 16);
   let r = (num >> 16) + amt;
 
   if (r > 255) {
@@ -15,7 +15,7 @@ export const lightenDarkenColor = (col: string, amt: number): string => {
     r = 0;
   }
 
-  let b = ((num >> 8) & 0x00FF) + amt;
+  let b = ((num >> 8) & 0x00ff) + amt;
 
   if (b > 255) {
     b = 255;
@@ -23,7 +23,7 @@ export const lightenDarkenColor = (col: string, amt: number): string => {
     b = 0;
   }
 
-  let g = (num & 0x0000FF) + amt;
+  let g = (num & 0x0000ff) + amt;
 
   if (g > 255) {
     g = 255;
@@ -36,7 +36,7 @@ export const lightenDarkenColor = (col: string, amt: number): string => {
 
 const _padToTwo = (numberString: string) => {
   if (numberString.length < 2) {
-      numberString = `0${numberString}`;
+    numberString = `0${numberString}`;
   }
 
   return numberString;
@@ -44,16 +44,25 @@ const _padToTwo = (numberString: string) => {
 
 export const hexAverage = (dayGradient: string[]): string => {
   return dayGradient
-    .reduce((previousValue: number[], currentValue: string) => {
-      const macth = currentValue.replace(/^#/, '').match(/.{2}/g);
+    .reduce(
+      (previousValue: number[], currentValue: string) => {
+        const macth = currentValue.replace(/^#/, '').match(/.{2}/g);
 
-      if (macth) {
-        return macth?.map((value: string, index: number) => (previousValue[index] + parseInt(value, 16)));
-      } else {
-        return [0, 0, 0];
-      }
-    }, [0, 0, 0])
+        if (macth) {
+          return macth?.map(
+            (value: string, index: number) =>
+              previousValue[index] + parseInt(value, 16),
+          );
+        } else {
+          return [0, 0, 0];
+        }
+      },
+      [0, 0, 0],
+    )
     .reduce((previousValue: string, currentValue: number) => {
-      return previousValue + _padToTwo(Math.floor(currentValue / dayGradient.length).toString(16));
+      return (
+        previousValue +
+        _padToTwo(Math.floor(currentValue / dayGradient.length).toString(16))
+      );
     }, '#');
 };

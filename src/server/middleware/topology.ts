@@ -6,16 +6,20 @@ import { HttpException } from '../httpException';
 
 let isConnected = false;
 
-export default async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export default async (
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): Promise<void> => {
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
 
   mongoClient.on('open', () => {
     isConnected = true;
-  })
+  });
 
   mongoClient.on('optopologyCloseden', () => {
     isConnected = false;
-  })
+  });
 
   if (!isConnected) {
     try {
@@ -24,8 +28,8 @@ export default async (request: Request, response: Response, next: NextFunction):
       console.error(`Connect to MongoDB failed: ${error.message}`);
 
       const httpException = new HttpException({
-        status:  HTTPStatus.INTERNAL_SERVER_ERROR,
-        message: error.message
+        status: HTTPStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
       });
 
       return next(httpException);

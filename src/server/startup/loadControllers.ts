@@ -15,12 +15,14 @@ export default (app: Express): void => {
     app[method](
       route.path,
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require(`../controllers/${handler[0]}`)[handler[1]]
+      require(`../controllers/${handler[0]}`)[handler[1]],
     );
 
     const placeholders = route.path.match(/:\w+/g) || [];
 
-    routePlaceholder.placeholder = placeholders.map((placeholder: string) => placeholder.slice(1));
+    routePlaceholder.placeholder = placeholders.map((placeholder: string) =>
+      placeholder.slice(1),
+    );
     routes.raw.push(routePlaceholder);
     routes.byName[route.name] = routePlaceholder;
     routes.byPath[route.path] = routePlaceholder;

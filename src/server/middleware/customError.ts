@@ -7,7 +7,7 @@ export default (
   error: HttpException,
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   response.status(error.status).end(error.message);
 };

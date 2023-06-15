@@ -13,10 +13,11 @@ export default (app: Express): void => {
     server: {
       hostname: process.env.HOSTNAME || 'localhost',
       port: process.env.PORT || '3000',
-      mongodbUri: process.env.MONGODB_ATLAS_CLUSTER_URI || 'mongodb://localhost',
+      mongodbUri:
+        process.env.MONGODB_ATLAS_CLUSTER_URI || 'mongodb://localhost',
       mongodbDatabase: process.env.MONGODB_DATABASE || 'coloroflocation',
       mongodbCollection: process.env.MONGODB_COLLECTION || 'colors',
       cameraLocation: process.env.LOCATION || 'Berlin',
-    }
+    },
   });
 };
