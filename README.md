@@ -38,3 +38,4 @@ Build and start the project at `http://localhost:3000/`:
 - Prettier
 - Mocha
 - Chai
+- D3
