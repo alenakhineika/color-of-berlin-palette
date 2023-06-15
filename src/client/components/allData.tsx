@@ -1,9 +1,8 @@
 import * as React from 'react';
-
-import { RecordsByDay } from '../../shared/types/types';
+import type { Document } from 'mongodb';
 
 interface Proprs {
-  records: RecordsByDay[];
+  records: Document[];
 }
 
 export default class AllData extends React.Component<Proprs, {}> {

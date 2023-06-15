@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import apiRoute from '../router';
-import { Records, Record, RecordsByDay, RecordsLeaderboard } from '../../shared/types/types';
 import AllData from './allData';
 import RecentRecords from './recentRecords';
 import RecentRecordsPerWeek from './recentRecordsPerWeek';
 import Leaderboard from './leaderboard';
+import type { Document } from 'mongodb';
 
 import '../app.less';
 
 interface State {
-  records: Records;
+  records: Document[];
   activeView?: string;
 }
 
@@ -38,13 +38,13 @@ export default class App extends React.Component<{}, State> {
   renderLayout(): React.ReactNode {
     switch(this.state.activeView) {
       case activeView.RECENT_RECORDS:
-        return <RecentRecords records={this.state.records as Record[]} />;
+        return <RecentRecords records={this.state.records as Document[]} />;
       case activeView.RECENT_RECORDS_PER_WEEK:
-        return <RecentRecordsPerWeek records={this.state.records as RecordsByDay[]} />;
+        return <RecentRecordsPerWeek records={this.state.records as Document[]} />;
       case activeView.ALL_DATA:
-        return <AllData records={this.state.records as RecordsByDay[]} />;
+        return <AllData records={this.state.records as Document[]} />;
       case activeView.LEADERBOARD:
-        return <Leaderboard records={this.state.records as RecordsLeaderboard[]} />;
+        return <Leaderboard records={this.state.records as Document[]} />;
       default:
         return <div />;
     }
@@ -80,8 +80,11 @@ export default class App extends React.Component<{}, State> {
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
           {this.renderButton(activeView.RECENT_RECORDS , 'Recent Records')}
           {this.renderButton(activeView.RECENT_RECORDS_PER_WEEK, 'Recent Records Per Week')}
-          {this.renderButton(activeView.ALL_DATA, 'All Data')}
-          {this.renderButton(activeView.LEADERBOARD, 'Leaderboard')}
+          {this.renderButton(activeView.ALL_DATA, 'Last 365 Days')}
+          {
+            /* TODO: add a new bubble chart that works with React 18 */
+            /* this.renderButton(activeView.LEADERBOARD, 'Leaderboard') */
+          }
         </div>
         {this.renderLayout()}
       </div>

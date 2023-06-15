@@ -1,9 +1,8 @@
 import * as React from 'react';
-
-import { Record } from '../../shared/types/types';
+import type { Document } from 'mongodb';
 
 interface Proprs {
-  records: Record[];
+  records: Document[];
 }
 
 export default class RecentRecords extends React.Component<Proprs, {}> {

@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     main: './src/client/components/index.tsx',
   },
+  mode: 'none',
   module: {
     rules: [
       {

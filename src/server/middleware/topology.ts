@@ -4,14 +4,20 @@ import { MongoClient } from 'mongodb';
 
 import { HttpException } from '../httpException';
 
-const isConnected = (mongoClient: MongoClient): boolean => {
-  return (!!mongoClient && mongoClient.isConnected());
-};
+let isConnected = false;
 
 export default async (request: Request, response: Response, next: NextFunction): Promise<void> => {
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
 
-  if (!isConnected(mongoClient)) {
+  mongoClient.on('open', () => {
+    isConnected = true;
+  })
+
+  mongoClient.on('optopologyCloseden', () => {
+    isConnected = false;
+  })
+
+  if (!isConnected) {
     try {
       await mongoClient.connect();
     } catch (error) {

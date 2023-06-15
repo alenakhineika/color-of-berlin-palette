@@ -1,12 +1,12 @@
 import HTTPStatus from 'http-status';
 import { MongoClient, Db, Collection } from 'mongodb';
+import type { Document } from 'mongodb';
 import React from 'react';
 import { renderToString  } from 'react-dom/server';
 import { Request, Response, NextFunction } from 'express';
 
 import App from '../../client/components/app';
 import { HttpException } from '../httpException';
-import { Records } from '../../shared/types/types';
 
 exports.index = async (request: Request, response: Response): Promise<void> => {
   const html = ({ body }: { body: string }) => `
@@ -39,7 +39,7 @@ exports.getRecentRecords = async (
   // Access the `records` collection.
   const collection: Collection | undefined = database.collection(mongodbCollection);
   // The data format expected by the client.
-  let records: Records = [];
+  let records: Document[] = [];
 
   if (!collection) {
     return response.json({ records });
@@ -73,7 +73,7 @@ exports.getRecentRecordsPerWeek = async (
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let records: Records = [];
+  let records: Document[] = [];
 
   if (!collection) {
     return response.json({ records });
@@ -130,7 +130,7 @@ exports.getAllData = async (
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let records: Records = [];
+  let records: Document[] = [];
 
   if (!collection) {
     return response.json({ records });
@@ -190,7 +190,7 @@ exports.getLeaderboard = async (
   const mongoClient: MongoClient = request.app.get('service.mongodbClient')();
   const database: Db | undefined = mongoClient.db(mongodbDatabase);
   const collection: Collection | undefined = database.collection(mongodbCollection);
-  let records: Records = [];
+  let records: Document[] = [];
 
   if (!collection) {
     return response.json({ records });
