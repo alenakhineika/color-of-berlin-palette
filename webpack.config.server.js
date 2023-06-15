@@ -2,9 +2,9 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: 'production',
   entry: {
     server: './src/server/index.ts'
   },
@@ -31,10 +31,13 @@ module.exports = {
       }
     ],
   },
-  plugins: [new MiniCssExtractPlugin({
-    filename: './[name].css',
-    chunkFilename: './[id].css',
-  })],
+  plugins: [
+    new Dotenv(),
+    new MiniCssExtractPlugin({
+      filename: './[name].css',
+      chunkFilename: './[id].css',
+    })
+  ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.less'],
   },

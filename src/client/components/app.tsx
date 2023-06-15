@@ -24,14 +24,14 @@ enum activeView {
 export default class App extends React.Component<{}, State> {
   state: State = { records: [] };
 
-  getRecords = (activeView: string, event: MouseEvent): void => {
+  getRecords = (view: string, event: MouseEvent): void => {
     event.preventDefault();
 
-    fetch(apiRoute.getRoute(activeView))
+    fetch(apiRoute.getRoute(view))
       .then(res => res.json())
       .then(res => this.setState({
         records: res.records,
-        activeView
+        activeView: view,
       }));
   };
 
@@ -50,8 +50,13 @@ export default class App extends React.Component<{}, State> {
     }
   }
 
-  renderButton(activeView: string, name: string): React.ReactNode {
-    const isActiveClass = this.state.activeView === activeView ? 'active' : '';
+  handleChange(view: string, event: MouseEvent): void {
+    event.preventDefault();
+    this.getRecords(view, event);
+  }
+
+  renderButton(view: string, name: string): React.ReactNode {
+    const isActiveClass = this.state.activeView === view ? 'active' : '';
 
     return (
       <label className={`btn btn-outline-secondary btn-sm ${isActiveClass}`}>
@@ -60,8 +65,8 @@ export default class App extends React.Component<{}, State> {
           name="options"
           id={`button${activeView}`}
           autoComplete="off"
-          onClick={this.getRecords.bind(this, activeView)}
-          checked={this.state.activeView === activeView ? true : false} /> {name}
+          onChange={this.handleChange.bind(this, view)}
+          checked={this.state.activeView === view ? true : false} /> {name}
       </label>
     );
   }

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: 'production',
   entry: {
     main: './src/client/components/index.tsx',
   },
@@ -24,10 +24,13 @@ module.exports = {
       }
     ],
   },
-  plugins: [new MiniCssExtractPlugin({
-    filename: './[name].css',
-    chunkFilename: './[id].css',
-  })],
+  plugins: [
+    new Dotenv(),
+    new MiniCssExtractPlugin({
+      filename: './[name].css',
+      chunkFilename: './[id].css',
+    })
+  ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.less'],
   },

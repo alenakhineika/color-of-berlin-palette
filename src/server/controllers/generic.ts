@@ -120,7 +120,7 @@ exports.getRecentRecordsPerWeek = async (
   }
 };
 
-/* Switched to 365 days */
+/* Set to 365 days */
 exports.getAllData = async (
   request: Request,
   response: Response,
@@ -202,7 +202,7 @@ exports.getLeaderboard = async (
       {
         $group: {
           _id: '$colorHex',
-          recordsByColor: { $push: { id: '$id' } },
+          recordsByColor: { $push: { id: { $trim: { input: "$id", chars: '#' } } } },
           value: { $sum: 1 }
         }
       },
