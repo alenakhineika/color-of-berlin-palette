@@ -122,6 +122,9 @@ export default class BubbleChart extends React.Component<Props, {}> {
       showLegend,
       legendPercentage,
     } = this.props;
+    // Reset the svg element to a empty state.
+    this.svg.innerHTML = '';
+
     const bubblesWidth = showLegend
       ? width * (1 - legendPercentage / 100)
       : width;
@@ -188,10 +191,10 @@ export default class BubbleChart extends React.Component<Props, {}> {
         d.data.color ? d.data.color : color(nodes.indexOf(d)),
       )
       .style('z-index', 1)
-      .on('mouseover', function (d) {
+      .on('mouseover', (d) => {
         d3.select(`#${d.id}`).attr('r', d.r * 1.04);
       })
-      .on('mouseout', function (d) {
+      .on('mouseout', (d) => {
         const r = d.r - d.r * 0.04;
         d3.select(`#${d.id}`).attr('r', r);
       });

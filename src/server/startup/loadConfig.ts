@@ -1,7 +1,5 @@
 import { Express } from 'express';
 
-import config from '../config';
-
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   require('dotenv').config();
@@ -9,7 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 export default (app: Express): void => {
   app.set('config', {
-    ...config,
     server: {
       hostname: process.env.HOSTNAME || 'localhost',
       port: process.env.PORT || '3000',

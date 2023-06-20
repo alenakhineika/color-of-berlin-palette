@@ -8,8 +8,6 @@ declare namespace Express {
     payload?: {
       data?: Map<string, string>;
       meta?: Map<string, string>;
-      routeInfo?: Application;
-      routeQuery?: any;
     };
   }
 }
