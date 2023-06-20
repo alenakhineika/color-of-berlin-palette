@@ -32,6 +32,7 @@ Build and start the project at `http://localhost:3000/`:
 - Server-side Rendering
 - Server-side Routing
 - Express
+- Helm
 - Less
 - Bootstrap
 - Eslint

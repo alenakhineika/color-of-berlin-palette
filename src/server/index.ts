@@ -1,12 +1,12 @@
-import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import express, { Express } from 'express';
+import express from 'express';
+import helmet from 'helmet';
 
 import middleware from './middleware';
 import startup from './startup';
 
-const app: Express = express();
+const app = express();
 
 // Load project settings.
 startup.loadConfig(app);
@@ -14,21 +14,21 @@ startup.loadSettings(app);
 startup.loadRoutes(app);
 
 // Apply before middleware.
+app.use(helmet());
+
 app.use(cookieParser());
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: '300mb' }));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '300mb' })); // To parse the incoming requests with JSON payloads.
+
 app.use(middleware.logger);
 app.use(middleware.payload);
-app.use(middleware.routeInfo);
 app.use(express.static(__dirname + '/public'));
 app.use(middleware.topology);
 
 // Instantiate the MongoDB client.
 startup.loadMongodbClient(app);
-
-// Map routes to controllers.
-startup.loadControllers(app);
 
 // Use custom error handler as after middleware.
 app.use(middleware.customError);
